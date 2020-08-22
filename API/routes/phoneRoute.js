@@ -2,11 +2,17 @@ const express = require("express");
 const phoneModel = require("../models/phoneDetailModel");
 const router = express.Router();
 
-
 // get all phones details
 router.get("/", async (req, res) => {
-  let allPhones = await phoneModel.find();
-  res.send(allPhones);
+  try {
+    let phones = await phoneModel.find();
+    if (!phones) {
+      return res.status(404).send({ message: "No Phones Available" });
+    }
+    res.send(phones);
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+  }
 });
 
 
