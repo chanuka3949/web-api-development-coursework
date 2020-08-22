@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 class Cart extends Component {
   state = {};
-  
+
   render() {
     return (
       <div id="root">
@@ -26,7 +26,9 @@ class Cart extends Component {
                         />
                       </div>
                       <div className="col-sm-4 p-2">
-                        <h5 className="mb-1">Samsung Galaxy M11 (32GB) - Violet</h5>
+                        <h5 className="mb-1">
+                          Samsung Galaxy M11 (32GB) - Violet
+                        </h5>
                         <p className="mb-1">Price: $134.99 </p>
                       </div>
                       <div className="col-sm-2 p-2 text-center ">
@@ -58,16 +60,28 @@ class Cart extends Component {
               </div>
               <div className="col-sm-3 p-3">
                 <div className="card card-body">
-                  <p className="mb-1">Total Items</p>
+                  <h6 className="mb-1">User Id</h6>
+                  <p className=" mb-3 txt-right">123456</p>
+                  <h6 className="mb-1">Shipping Details</h6>
+                  <p className=" mb-3 txt-right">Shipping address</p>
+                  <button className="btn btn-outline-primary btn-sm">
+                    Edit
+                  </button>
+                </div>
+                <div className="card card-body">
+                  <h6 className="mb-1">Total Items</h6>
                   <h4 className=" mb-3 txt-right">1</h4>
-                  <p className="mb-1">Total Payment</p>
+                  <h6 className="mb-1">Total Payment</h6>
                   <h3 className="m-0 txt-right">$134.99</h3>
                   <hr className="my-4" />
                   <div className="text-center">
                     <button type="button" className="btn btn-primary mb-2">
                       CHECKOUT
                     </button>
-                    <button type="button" className="btn btn-outlineprimary btn-sm">
+                    <button
+                      type="button"
+                      className="btn btn-outlineprimary btn-sm"
+                    >
                       CLEAR
                     </button>
                   </div>
