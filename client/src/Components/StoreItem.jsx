@@ -25,7 +25,7 @@ class Phone extends Component {
           <button className="btn btn-outline-success float-left">
             View Details
           </button>
-          <button className="btn btn-primary float-right">Add To Cart</button>
+          <button className="btn btn-primary float-right" onClick={this.props.onaddToCart}>Add To Cart</button>
         </div>
       </div>
     );

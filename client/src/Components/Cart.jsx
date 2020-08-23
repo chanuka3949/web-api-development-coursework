@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 class Cart extends Component {
-  state = {};
+  state = {
+    cartList: []
+  };
 
   render() {
     return (
@@ -27,9 +30,9 @@ class Cart extends Component {
                       </div>
                       <div className="col-sm-4 p-2">
                         <h5 className="mb-1">
-                          Samsung Galaxy M11 (32GB) - Violet
+                        {this.state.cartList.map((avenger) => (avenger.itemName))}
                         </h5>
-                        <p className="mb-1">Price: $134.99 </p>
+                        <p className="mb-1">{localStorage.getItem('A')}</p>
                       </div>
                       <div className="col-sm-2 p-2 text-center ">
                         <p className="mb-0">Qty: 1</p>
@@ -95,6 +98,12 @@ class Cart extends Component {
         </footer>
       </div>
     );
+  }
+  
+  async componentDidMount() {
+    let {data} = await axios.get(`http://localhost:5500/api/cart/${2}`);  
+    this.setState({cartList: data})
+    console.log(data);
   }
 }
 
