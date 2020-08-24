@@ -1,20 +1,13 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 class Cart extends Component {
-  state = {
-    cartList: []
-  };
+  state = {};
 
   render() {
     return (
       <div id="root">
         <main className="container">
           <div>
-            <div className="text-center mt-5">
-              <h1>Cart</h1>
-              <p>This is the Cart Page.</p>
-            </div>
             <div className="row no-gutters justify-content-center">
               <div className="col-sm-9 p-3">
                 <div>
@@ -22,23 +15,34 @@ class Cart extends Component {
                     <div className="row no-gutters py-2">
                       <div className="col-sm-2 p-2">
                         <img
-                          alt="Sour Puss Raspberry"
-                          src="https://objectstorage.ap-mumbai-1.oraclecloud.com/n/softlogicbicloud/b/cdn/o/products/140-140/M21BL--1--1592480087.jpg"
-                          className="img-fluid d-block"
-                          style={{ margin: "0px auto", maxHeight: "50px" }}
+                          className="img-fluid"
+                          src={this.props.phone.itemimgUrl}
+                          alt=""
+                          style={{
+                            display: "block",
+                            margin: "0px auto 10px",
+                            maxHeight: "200px",
+                          }}
                         />
                       </div>
                       <div className="col-sm-4 p-2">
-                        <h5 className="mb-1">
-                        {this.state.cartList.map((avenger) => (avenger.itemName))}
-                        </h5>
-                        <p className="mb-1">{localStorage.getItem('A')}</p>
+                        <h5 className="mb-1">{this.props.phone.itemName}</h5>
+                        <p className="mb-1">
+                          Price: {this.props.phone.itemprice}
+                        </p>
                       </div>
                       <div className="col-sm-2 p-2 text-center ">
-                        <p className="mb-0">Qty: 1</p>
+                        <p className="mb-0">
+                          Qty: {this.props.phone.itemCount}
+                        </p>
                       </div>
                       <div className="col-sm-4 p-2 text-right">
-                        <button className="btn btn-primary btn-sm mr-2 mb-1">
+                        <button
+                          className="btn btn-primary btn-sm mr-2 mb-1"
+                          onClick={this.props.onCountDeduct}
+                          style={{ height: "35px" }}
+                        >
+                          <img src="minus-solid.svg" alt="" />
                           <svg
                             width="20px"
                             fill="currentColor"
@@ -47,7 +51,12 @@ class Cart extends Component {
                             <path d="" clipRule="evenodd" fillRule="evenodd" />
                           </svg>
                         </button>
-                        <button className="btn btn-danger btn-sm mb-1">
+                        <button
+                          className="btn btn-danger btn-sm mb-1"
+                          onClick={this.props.onCount}
+                          style={{ height: "35px" }}
+                        >
+                          <img src="plus-circle-solid.svg" alt="" />
                           <svg
                             width="20px"
                             fill="currentColor"
@@ -61,49 +70,11 @@ class Cart extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-3 p-3">
-                <div className="card card-body">
-                  <h6 className="mb-1">User Id</h6>
-                  <p className=" mb-3 txt-right">123456</p>
-                  <h6 className="mb-1">Shipping Details</h6>
-                  <p className=" mb-3 txt-right">Shipping address</p>
-                  <button className="btn btn-outline-primary btn-sm">
-                    Edit
-                  </button>
-                </div>
-                <div className="card card-body">
-                  <h6 className="mb-1">Total Items</h6>
-                  <h4 className=" mb-3 txt-right">1</h4>
-                  <h6 className="mb-1">Total Payment</h6>
-                  <h3 className="m-0 txt-right">$134.99</h3>
-                  <hr className="my-4" />
-                  <div className="text-center">
-                    <button type="button" className="btn btn-primary mb-2">
-                      CHECKOUT
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outlineprimary btn-sm"
-                    >
-                      CLEAR
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </main>
-        <footer className="footer_footer__15JWM  mt-5 p-3">
-          2020 © React Store
-        </footer>
       </div>
     );
-  }
-  
-  async componentDidMount() {
-    let {data} = await axios.get(`http://localhost:5500/api/cart/${2}`);  
-    this.setState({cartList: data})
-    console.log(data);
   }
 }
 

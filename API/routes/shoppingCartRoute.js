@@ -52,23 +52,21 @@ router.post("/", async (req, res) => {
 
 
 //Edit cart details
-router.put("/:userId", async (req, res) => {
-  let phone = await phoneModel.findById(req.params.phoneId);
+router.put("/:itemId", async (req, res) => {
+  let cartEdit = await shoppingCartModel.findById(req.params.itemId);
 
-  if (!phone) {
+  if (!cartEdit) {
     return res.status(404).send("the givven id dose not in our server");
   }
-  if (!req.body.name) {
+  if (!req.body.itemCount) {
     return res.status(400).send("Not all madatary values have been set !"); //validations
   }
-        phone.set({ name: req.body.name });
-        phone.set({ brand: req.body.brand });
-        phone.set({ price: req.body.price });
-        phone.set({ imgUrl: req.body.imgUrl });
-        phone.set({ stockCount: req.body.stockCount });
 
-  phone = await phone.save();
-  res.send(phone);
+  cartEdit.set({ itemCount: req.body.itemCount });
+ // cartEdit.set({ itemprice: req.body.itemprice });
+ 
+  cartEdit = await cartEdit.save();
+  res.send(cartEdit);
 });
 
 
