@@ -23,7 +23,7 @@ const shoppingCartSchema = new mongoose.Schema({
     },
 
     itemprice : {
-        type: String,       
+        type: Number,       
         required: true
     },
 
@@ -33,7 +33,7 @@ const shoppingCartSchema = new mongoose.Schema({
     },
 
     itemCount : {
-        type: String,       
+        type: Number,       
         required: true
     },
 });
