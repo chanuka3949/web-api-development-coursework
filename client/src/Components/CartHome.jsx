@@ -63,6 +63,7 @@ class CartHome extends Component {
   async componentDidMount() {
     let { data } = await axios.get(`http://localhost:5500/api/cart/${2}`);
     this.setState({ cartList: data });
+
   }
 }
 
