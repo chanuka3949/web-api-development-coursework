@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Auth from "./Auth";
 
 class NavBar extends Component {
   state = {
@@ -6,24 +8,21 @@ class NavBar extends Component {
   render() {
     return (
       <div className="container">
-        <header className="header_header__3p7LH">
-          <a href="/">Store</a>
-          <a href="/about">About Us</a>
-          <a href="/about"> Contact Us</a>
-          <a href="/">Sign Up</a>
-          <a href="/">Sign In</a>
-          <a href="/cart">
-            <i className="fas fa-cart-plus"></i>
-            <svg fill="currentColor" viewBox="0 0 20 20">
-              <path d="" />
-            </svg>{" "}
-            
-    Cart {"("}{this.props.cartCount}{")"}
-          </a>
-        </header>
+           <nav className="header_header__3p7LH">
+        <Link to="/">Store</Link>
+        <Link to="/about">About Us</Link>
+        <Link to="/about"> Contact Us</Link>
+        <Auth />
+        <a href="/cart">
+          <i className="fas fa-cart-plus"></i>
+          <svg fill="currentColor" viewBox="0 0 20 20">
+            <path d="" />
+          </svg>{" "}
+          Cart {"("}{this.props.cartCount}{")"}
+        </a>
+      </nav>
       </div>
-    );
-  }
+    )}
 }
 
 export default NavBar;

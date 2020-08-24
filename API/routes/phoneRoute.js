@@ -21,7 +21,7 @@ router.get("/:phoneId", async (req, res) => {
   let phoneData = await phoneModel.findById(req.params.phoneId);
 
   if (!phoneData) {
-    res.status(404).send("the givven id dose not in our server");
+    res.status(404).send("the given id dose not in our server");
   }
   res.send(phoneData);
 });
@@ -30,7 +30,7 @@ router.get("/:phoneId", async (req, res) => {
 //create records
 router.post("/", async (req, res) => {
   if (!req.body.brand) {
-    return res.status(400).send("Not all madatary values have benn set !"); //validations
+    return res.status(400).send("Not all mandatory values have been set!"); //validations
   }
   try {
     let phoneDataToBeAddedDb = new phoneModel({
@@ -54,7 +54,7 @@ router.put("/:phoneId", async (req, res) => {
   let phone = await phoneModel.findById(req.params.phoneId);
 
   if (!phone) {
-    return res.status(404).send("the givven id dose not in our server");
+    return res.status(404).send("the given id dose not in our server");
   }
   if (!req.body.name) {
     return res.status(400).send("Not all madatary values have been set !"); //validations
