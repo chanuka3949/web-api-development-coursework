@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 class NavBar extends Component {
-  state = {};
+  state = {
+  };
   render() {
     return (
       <div className="container">
@@ -16,7 +17,8 @@ class NavBar extends Component {
             <svg fill="currentColor" viewBox="0 0 20 20">
               <path d="" />
             </svg>{" "}
-            Cart (1)
+            
+    Cart {"("}{this.props.cartCount}{")"}
           </a>
         </header>
       </div>

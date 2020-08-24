@@ -1,14 +1,16 @@
 const Phones = require("./routes/phoneRoute");
+const Cart = require("./routes/shoppingCartRoute");
 const home = require("./routes/home");
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 5000;
+const port = 5500
 
 app.use(express.json());
 app.use(cors());
 app.use("/api/phones", Phones);
+app.use("/api/cart", Cart);
 app.use("/", home);
 
 mongoose
