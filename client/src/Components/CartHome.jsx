@@ -28,6 +28,7 @@ class CartHome extends Component {
             onCountDeduct={() => this.deductCartItem(item)}
           />
         ))}
+        <Checkout/>
       </React.Fragment>
     );
   }

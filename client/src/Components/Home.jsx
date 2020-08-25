@@ -4,6 +4,7 @@ import axios from "axios";
 import CartSearch from "./CartSearch";
 //import Cart from "./Cart";
 import NavBar from "./NavBar";
+import Slider from "./Slider";
 
 class Home extends Component {
   state = {
@@ -14,10 +15,17 @@ class Home extends Component {
 
   render() {
     return (
+      
       <React.Fragment>
+     
         <div>
           <NavBar cartCount={this.state.cartCount} />
         </div>
+
+        <div>
+        <Slider/>
+        </div>
+        
         <div>
           <CartSearch />
         </div>
