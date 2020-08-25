@@ -19,10 +19,8 @@ class Cartsearch extends Component {
             <div className="form-group">
               <input
                 type="text"
-                name
                 placeholder="Search product"
                 className="form-control"
-                id
               />
             </div>
           </div>
