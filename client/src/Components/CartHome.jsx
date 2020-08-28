@@ -18,19 +18,25 @@ class CartHome extends Component {
         <div>
           <NavBar cartCount={this.state.cartCount} />
         </div>
+
         <div>
           <CartSearch />
         </div>
 
-        {this.state.cartList.map((item) => (
-          <Cart
-            key={item._id}
-            phone={item}
-            onCount={() => this.updateCartItem(item)}
-            onCountDeduct={() => this.deductCartItem(item)}
-          />
-        ))}
-        <Checkout/>
+        <div className="row no-gutters">
+          {this.state.cartList.map((item) => (
+            <Cart
+              key={item._id}
+              phone={item}
+              onCount={() => this.updateCartItem(item)}
+              onCountDeduct={() => this.deductCartItem(item)}
+            />
+          ))}
+        </div>
+
+        <div>
+          <Checkout />
+        </div>
       </React.Fragment>
     );
   }
@@ -39,14 +45,17 @@ class CartHome extends Component {
   async updateCartItem(item) {
     await axios.put(`http://localhost:5500/api/cart/${item._id}`, {
       itemCount: item.itemCount + 1,
-      // itemprice: item.itemprice + item.itemprice,
+      //  itemprice: item.itemprice + item.itemprice,
     });
+
+    // let total = item.itemprice + item.itemprice;
+    //console.log(total);
 
     let cartList = [...this.state.cartList];
     let index = cartList.indexOf(item);
     cartList[index] = { ...item };
     cartList[index].itemCount++;
-    // cartList[index].itemprice++ ;
+    //  cartList[index].itemprice++ ;
     this.setState({ cartList: cartList });
   }
 
@@ -65,14 +74,14 @@ class CartHome extends Component {
 
   async componentDidMount() {
     let { data } = await axios.get(`http://localhost:5500/api/cart/${2}`);
+    console.log(data);
     this.setState({ cartList: data });
-
   }
 }
 
 // export default CartHome; //Use this to bypass the login redirect when development
 export default withAuth0(
   withAuthenticationRequired(CartHome, {
-    onRedirecting: () => <Loading/>,
+    onRedirecting: () => <Loading />,
   })
 );

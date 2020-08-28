@@ -5,12 +5,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import config from "./auth_config.json";
 import App from "./App";
 import "./index.css";
-import NavBar from "./Components/NavBar";
+//import NavBar from "./Components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
-import Home from "./Components/Home";
-import Cart from "./Components/Cart";
-import CartHome from "./Components/CartHome";
 import Footer from "./Components/Footer";
+
 
 ReactDOM.render(
   <BrowserRouter>
@@ -21,6 +19,7 @@ ReactDOM.render(
     >
       <App />
     </Auth0Provider>
+    <Footer/>
   </BrowserRouter>,
   document.getElementById("root")
 );

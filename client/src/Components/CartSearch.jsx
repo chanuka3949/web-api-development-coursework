@@ -12,16 +12,16 @@ class Cartsearch extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-8">
-            <div className="py-3"></div>
-          </div>
-          <div className="col-sm-4">
-            <div className="form-group">
+          <div className="col-sm-12">
+            <div class="d-flex justify-content-center pb-3 search-button">
               <input
                 type="text"
                 placeholder="Search product"
                 className="form-control"
               />
+              <button className="btn btn-primary">
+                <img src="search.png" alt=""></img>
+              </button>
             </div>
           </div>
         </div>

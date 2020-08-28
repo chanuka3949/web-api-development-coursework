@@ -1,19 +1,24 @@
 import React, { Component } from "react";
+import Fade from "react-reveal/Fade";
 
 class Cart extends Component {
   state = {};
 
   render() {
     return (
-      <div id="root">
+      <Fade left cascade>
         <main className="container">
-          <div>
-            <div className="row no-gutters justify-content-center">
-              <div className="col-sm-9 p-3">
-                <div>
+        {/* <div className="row no-gutters justify-content-center"> */}
+        <div className="row no-gutters">
+            <div className="col-sm-7 pb-3">
+              <div className="card card-body cart-box">
+             
                   <div className="card card-body border-0">
                     <div className="row no-gutters py-2">
-                      <div className="col-sm-2 p-2">
+                      <div className="col-sm-1 cart-close">
+                        <button className="btn btn-danger"> X </button>
+                      </div>
+                      <div className="col-sm-2">
                         <img
                           className="img-fluid"
                           src={this.props.phone.itemimgUrl}
@@ -25,18 +30,19 @@ class Cart extends Component {
                           }}
                         />
                       </div>
+
                       <div className="col-sm-4 p-2">
-                        <h5 className="mb-1">{this.props.phone.itemName}</h5>
-                        <p className="mb-1">
+                        <h6 className="mb-1">{this.props.phone.itemName}</h6>
+                      <strong><p className="mb-1">
                           Price: {this.props.phone.itemprice}
-                        </p>
+                        </p></strong> 
                       </div>
                       <div className="col-sm-2 p-2 text-center ">
-                        <p className="mb-0">
+                      <strong><p className="mb-0">
                           Qty: {this.props.phone.itemCount}
-                        </p>
+                        </p></strong>
                       </div>
-                      <div className="col-sm-4 p-2 text-right">
+                      <div className="col-sm-2 p-2 text-right">
                         <button
                           className="btn btn-primary btn-sm mr-2 mb-1"
                           onClick={this.props.onCountDeduct}
@@ -68,12 +74,14 @@ class Cart extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
+                
               </div>
+
+              
             </div>
           </div>
         </main>
-      </div>
+      </Fade>
     );
   }
 }

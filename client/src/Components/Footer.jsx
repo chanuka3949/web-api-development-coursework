@@ -5,12 +5,11 @@ class Checkout extends Component {
 
   render() {
     return (
-        <footer>
-        All right recieved
-      </footer>
+      <div className="footer-class">
+        <footer>All right recieved</footer>
+      </div>
     );
   }
-  
 }
 
 export default Checkout;

@@ -7,6 +7,7 @@ import { Route } from "react-router-dom";
 import Home from "./Components/Home";
 import CartHome from "./Components/CartHome";
 
+
 function App() {
   const { isLoading } = useAuth0();
 
@@ -14,11 +15,13 @@ function App() {
 
   return (
     <React.Fragment>
-      <NavBar />
+      {/* <NavBar /> */}
       <Route exact path="/" component={Home} />
       <Route exact path="/cart" component={CartHome} />
+      
     </React.Fragment>
   );
+ 
 }
 
 export default App;
