@@ -4,6 +4,8 @@ import CartSearch from "./CartSearch";
 import Cart from "./Cart";
 import NavBar from "./NavBar";
 import Checkout from "./Checkout";
+import Loading from "./Loading";
+import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 class CartHome extends Component {
   state = {
@@ -68,4 +70,9 @@ class CartHome extends Component {
   }
 }
 
-export default CartHome;
+// export default CartHome; //Use this to bypass the login redirect when development
+export default withAuth0(
+  withAuthenticationRequired(CartHome, {
+    onRedirecting: () => <Loading/>,
+  })
+);

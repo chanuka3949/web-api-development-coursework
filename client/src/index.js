@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
+import config from "./auth_config.json";
+import App from "./App";
 import "./index.css";
 import NavBar from "./Components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
@@ -10,13 +13,14 @@ import CartHome from "./Components/CartHome";
 import Footer from "./Components/Footer";
 
 ReactDOM.render(
-  <Router>
-    <Switch>
-     
-      <Route exact path="/" component={Home} />
-      <Route exact path="/cart" component={CartHome} />
-    </Switch>
-    <Footer/>
-  </Router>,
+  <BrowserRouter>
+    <Auth0Provider
+      domain={config.domain}
+      clientId={config.clientId}
+      redirectUri={window.location.origin}
+    >
+      <App />
+    </Auth0Provider>
+  </BrowserRouter>,
   document.getElementById("root")
 );
