@@ -56,14 +56,14 @@ router.put("/:itemId", async (req, res) => {
   let cartEdit = await shoppingCartModel.findById(req.params.itemId);
 
   if (!cartEdit) {
-    return res.status(404).send("the givven id dose not in our server");
+    return res.status(404).send("the given id dose not in our server");
   }
   if (!req.body.itemCount) {
     return res.status(400).send("Not all madatary values have been set !"); //validations
   }
 
   cartEdit.set({ itemCount: req.body.itemCount });
- // cartEdit.set({ itemprice: req.body.itemprice });
+  //cartEdit.set({ itemprice: req.body.itemprice });
  
   cartEdit = await cartEdit.save();
   res.send(cartEdit);

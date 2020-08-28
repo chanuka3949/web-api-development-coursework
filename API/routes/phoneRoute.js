@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 // get phones details according to the givven id
 router.get("/:phoneId", async (req, res) => {
   let phoneData = await phoneModel.findById(req.params.phoneId);
@@ -25,7 +24,6 @@ router.get("/:phoneId", async (req, res) => {
   }
   res.send(phoneData);
 });
-
 
 //create records
 router.post("/", async (req, res) => {
@@ -48,7 +46,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-
 //Edit phone details
 router.put("/:phoneId", async (req, res) => {
   let phone = await phoneModel.findById(req.params.phoneId);
@@ -59,16 +56,15 @@ router.put("/:phoneId", async (req, res) => {
   if (!req.body.name) {
     return res.status(400).send("Not all madatary values have been set !"); //validations
   }
-        phone.set({ name: req.body.name });
-        phone.set({ brand: req.body.brand });
-        phone.set({ price: req.body.price });
-        phone.set({ imgUrl: req.body.imgUrl });
-        phone.set({ stockCount: req.body.stockCount });
+  phone.set({ name: req.body.name });
+  phone.set({ brand: req.body.brand });
+  phone.set({ price: req.body.price });
+  phone.set({ imgUrl: req.body.imgUrl });
+  phone.set({ stockCount: req.body.stockCount });
 
   phone = await phone.save();
   res.send(phone);
 });
-
 
 //delete phone details
 router.delete("/:phoneId", async (req, res) => {

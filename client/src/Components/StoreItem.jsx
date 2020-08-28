@@ -7,7 +7,6 @@ class Phone extends Component {
   state = {};
 
   openModal = (Phone) => {
-  //  console.log(Phone);
     this.setState({ Phone });
   };
 
@@ -37,14 +36,16 @@ class Phone extends Component {
                 display: "block",
                 margin: "0px auto 10px",
                 maxHeight: "200px",
+                // width: "135px",
+                width: "125px",
               }}
             />
 
             <div className="card-body">
-              <h5 className="card-title">{this.props.phone.name}</h5>
-              <h4 className="card-text">
+              <h6 className="card-title">{this.props.phone.name}</h6>
+              <h6 className="card-text">
                 ${""} {this.props.phone.price}
-              </h4>
+              </h6>
               <button
                 className="btn btn-outline-success float-left"
                 onClick={() => this.openModal(this.props.phone._id)}
@@ -67,19 +68,68 @@ class Phone extends Component {
               <button className="close-modal" onClick={this.closeModal}>
                 x
               </button>
-
               <div className="product-details">
                 <img src={this.props.phone.imgUrl} alt={""}></img>
                 <div className="product-details-description">
                   <p>
-                    <strong>{this.props.phone._id}</strong>
+                    <strong>{this.props.phone.name}</strong>
                   </p>
+                  <div className="discription pb-3">
+                    <strong>
+                      <h4>Discription</h4>
+                    </strong>
+                  </div>
 
-                  <p>{this.props.phone.name}</p>
+                  <div className="container">
+                    <h6>Display</h6>
+                    <ul>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                    </ul>
+
+                    <h6>Front Camera</h6>
+                    <ul>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                    </ul>
+
+                    <h6>Battery Capacity</h6>
+                    <ul>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                    </ul>
+
+                    <h6>Memory</h6>
+                    <ul>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>VDIS (Video Digital Image Stabilization)</li>
+                    </ul>
+                  </div>
+
+                  <div className="product-price">
+                    <div>
+                      <strong>
+                        Price ${""}
+                        {this.props.phone.price}
+                      </strong>
+                    </div>
+                    <button
+                      className="button primary btn btn-primary"
+                      onClick={() => {
+                        this.props.onaddToCart();
+                        this.closeModal();
+                      }}
+                    >
+                      Add To Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             </Zoom>
-            <div>modal</div>
           </Modal>
         )}
       </div>

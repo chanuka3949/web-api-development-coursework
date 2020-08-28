@@ -11,7 +11,7 @@ const phoneSchema = new mongoose.Schema({
     },
 
     price : {
-        type: String,       
+        type: Number,       
         required: true
     },
 
@@ -22,7 +22,7 @@ const phoneSchema = new mongoose.Schema({
     },
 
     stockCount : {
-        type: String,       
+        type: Number,       
         required: true
     },
 });

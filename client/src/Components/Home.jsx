@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import StoreItem from "./StoreItem";
 import axios from "axios";
 import CartSearch from "./CartSearch";
-//import Cart from "./Cart";
 import NavBar from "./NavBar";
+import Slider from "./Slider";
 
 class Home extends Component {
   state = {
@@ -18,16 +18,23 @@ class Home extends Component {
         <div>
           <NavBar cartCount={this.state.cartCount} />
         </div>
+
+        <div className="">
+          <Slider />
+        </div>
+
         <div>
           <CartSearch />
         </div>
+
         <div
           className="card-deck"
           style={{
+            // marginLeft: 40,
             marginLeft: 150,
             marginRight: 150,
-            marginTop: 50,
-            marginBottom: 300,
+            marginTop: 10,
+            marginBottom: 100,
           }}
         >
           {this.state.phoneList.map((phone) => (
@@ -99,6 +106,7 @@ class Home extends Component {
 
   async componentDidMount() {
     let { data } = await axios.get("http://localhost:5500/api/phones/");
+
     this.setState({ phoneList: data });
   }
 }
