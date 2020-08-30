@@ -16,8 +16,14 @@ const userSchema = new mongoose.Schema({
   picture: {
     type: String,
   },
-  shippingAddress: {
-    type: String,
+  address: {
+    address1: {type: String, default: null},
+    address2: {type: String, default: null},
+    city: {type: String, default: null},
+    state: {type: String, default: null},
+    country: {type: String, default: null},
+    postalCode: {type: String, default: null},
+    contactNumber: {type: String, default: null},
   },
 });
 
