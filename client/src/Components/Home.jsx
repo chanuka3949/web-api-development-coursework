@@ -19,7 +19,7 @@ class Home extends Component {
           <NavBar cartCount={this.state.cartCount} />
         </div>
 
-        <div className="">
+        <div className="container">
           <Slider />
         </div>
 

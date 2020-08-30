@@ -7,6 +7,8 @@ import Checkout from "./Checkout";
 import Loading from "./Loading";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
+import Fade from "react-reveal/Fade";
+
 class CartHome extends Component {
   state = {
     cartList: [],
@@ -22,8 +24,11 @@ class CartHome extends Component {
         <div>
           <CartSearch />
         </div>
-
+        
+        <Fade left cascade>
+        <div className="container">
         <div className="row no-gutters">
+        <div className="col-sm-8">
           {this.state.cartList.map((item) => (
             <Cart
               key={item._id}
@@ -32,11 +37,12 @@ class CartHome extends Component {
               onCountDeduct={() => this.deductCartItem(item)}
             />
           ))}
+       </div>
+       <div className="col-sm-4"><Checkout /></div>
         </div>
-
-        <div>
-          <Checkout />
         </div>
+        </Fade>
+       
       </React.Fragment>
     );
   }
