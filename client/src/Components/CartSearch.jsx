@@ -13,7 +13,7 @@ class Cartsearch extends Component {
 
         <div className="row">
           <div className="col-sm-12">
-            <div class="d-flex justify-content-center pb-3 search-button">
+            <div className="d-flex justify-content-center pb-3 search-button">
               <input
                 type="text"
                 placeholder="Search product"

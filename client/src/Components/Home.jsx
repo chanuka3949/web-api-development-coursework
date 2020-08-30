@@ -4,6 +4,7 @@ import axios from "axios";
 import CartSearch from "./CartSearch";
 import NavBar from "./NavBar";
 import Slider from "./Slider";
+import { withAuth0 } from "@auth0/auth0-react";
 var getIP = require("../thirdPartyAPI/IP.js");
 
 class Home extends Component {
@@ -11,9 +12,8 @@ class Home extends Component {
     phoneList: [],
     cartItems: [],
     cartCount: 0,
-    insertOrUpdate : 0,
+    insertOrUpdate: 0,
   };
-
   render() {
     return (
       <React.Fragment>
@@ -47,7 +47,6 @@ class Home extends Component {
             />
           ))}
         </div>
-        <div></div>
       </React.Fragment>
     );
   }
@@ -72,7 +71,6 @@ class Home extends Component {
   };
 
   async saveItemsOnCart(phone) {
-    
     localStorage.setItem("A", "7");
     let update = false;
     const cartItems = this.state.cartItems.slice();
@@ -92,10 +90,10 @@ class Home extends Component {
       update = false;
       this.setState({ cartCount: this.state.cartCount + 1 });
     }
-    this.setState({ cartItems});
-    
-    if(update === false){
-      await axios.post(`http://localhost:5500/api/cart/`, {
+    this.setState({ cartItems });
+
+    if (update === false) {
+      await axios.post(`http://localhost:5000/api/cart/`, {
         userId: localStorage.getItem("A"),
         itemId: phone._id,
         itemName: phone.name,
@@ -106,17 +104,14 @@ class Home extends Component {
       });
     }
 
-    if(update === true){
-      await axios.put(`http://localhost:5500/api/cart/${phone._id}`, {
+    if (update === true) {
+      await axios.put(`http://localhost:5000/api/cart/${phone._id}`, {
         itemCount: count,
         userId: localStorage.getItem("A"),
-        itemId: phone._id
+        itemId: phone._id,
       });
     }
-
-   
   }
-
 
   async componentDidMount() {
     //getIP.getIP();
@@ -125,7 +120,7 @@ class Home extends Component {
     console.log(api.data);
     localStorage.setItem("IP", api.data);
 
-    let ipfindKey = "96991d78-d978-42f1-ab20-e04f1b88e790";
+    let ipfindKey = "4a726bd0-3169-4ac4-b46b-27c6da6879ee";
     let IP = "81.142.16.134";
     let LocationDetails = await axios.get(
       `https://api.ipfind.com/?ip=${IP}&auth=${ipfindKey}`
@@ -135,9 +130,9 @@ class Home extends Component {
     console.log(LocationDetails.data.currency);
     console.log(LocationDetails);
 
-    let fixerApiAccessKey = "ebd93aa637b090f8808a8c83b5a9478c";
+    let fixerApiAccessKey = "d06e1099c3d4e07d044c77a892774bd8";
     let CurrencyData = await axios.get(
-      `http://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
+      `https://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
     );
     CurrencyData = CurrencyData.data.rates;
 
@@ -148,9 +143,9 @@ class Home extends Component {
       }
     }
 
-    let { data } = await axios.get("http://localhost:5500/api/phones/");
+    let { data } = await axios.get("http://localhost:5000/api/phones/");
     this.setState({ phoneList: data });
   }
 }
 
-export default Home;
+export default withAuth0(Home);

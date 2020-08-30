@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 import Fade from "react-reveal/Fade";
 import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
-var httpreq = require('httpreq');
+import httpreq from 'httpreq';
+import { withAuth0 } from "@auth0/auth0-react";
 
 class Phone extends Component {
   state = {
@@ -22,6 +23,15 @@ class Phone extends Component {
   closeModal = () => {
     this.setState({ Phone: null });
   };
+
+  addToCart() {
+    const { loginWithRedirect, isAuthenticated } = this.props.auth0;
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    } else {
+      this.props.onaddToCart();
+    }
+  }
 
   render() {
     const { Phone } = this.state;
@@ -63,7 +73,9 @@ class Phone extends Component {
               </button>
               <button
                 className="btn btn-primary float-right"
-                onClick={this.props.onaddToCart}
+                onClick={() => {
+                  this.addToCart();
+                }}
               >
                 Add To Cart
               </button>
@@ -92,12 +104,12 @@ class Phone extends Component {
                   <div className="container">
                     <h6>Resolution</h6>
                     <ul>
-                      <li>{this.state.resolution}</li>                     
+                      <li>{this.state.resolution}</li>
                     </ul>
 
                     <h6>Front Camera</h6>
                     <ul>
-                      <li>VDIS (Video Digital Image Stabilization)</li>                     
+                      <li>VDIS (Video Digital Image Stabilization)</li>
                     </ul>
 
                     <h6>Battery Capacity</h6>
@@ -203,4 +215,4 @@ async loadPhoneDetails() {
  this.setState({phonePrice :CurrentRate*this.props.phone.price});
  }
 }
-export default Phone;
+export default withAuth0(Phone);

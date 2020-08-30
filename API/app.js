@@ -9,7 +9,7 @@ const cors = require("cors");
 const authenticator = require("./middleware/authenticator");
 
 const app = express();
-const port = 5500;
+const port = 5000;
 
 //middleware
 //app.use(authenticator);
