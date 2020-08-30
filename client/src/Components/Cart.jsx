@@ -16,7 +16,7 @@ class Cart extends Component {
                   <div className="card card-body border-0">
                     <div className="row no-gutters py-2">
                       <div className="col-sm-1 cart-close">
-                        <button className="btn btn-danger"> X </button>
+                        <button className="btn btn-danger"  onClick={this.props.onDelete}> X </button>
                       </div>
                       <div className="col-sm-2">
                         <img
