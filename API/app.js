@@ -1,5 +1,6 @@
 const Phones = require("./routes/phoneRoute");
 const Cart = require("./routes/shoppingCartRoute");
+const CheckOut = require("./routes/checkOutRoute");
 const Users = require("./routes/userRoutes");
 const home = require("./routes/home");
 const mongoose = require("mongoose");
@@ -18,6 +19,7 @@ app.use(cors());
 app.use("/api/users", Users);
 app.use("/api/phones", Phones);
 app.use("/api/cart", Cart);
+app.use("/api/checkOut", CheckOut);
 app.use("/", home);
 
 app.use(authenticator);

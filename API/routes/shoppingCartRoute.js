@@ -52,31 +52,84 @@ router.post("/", async (req, res) => {
 
 
 //Edit cart details
-router.put("/:itemId", async (req, res) => {
-  let cartEdit = await shoppingCartModel.findById(req.params.itemId);
+// router.put("/:itemId", async (req, res) => {
+//   let cartEdit = await shoppingCartModel.findById(req.params.itemId);
 
-  if (!cartEdit) {
-    return res.status(404).send("the given id dose not in our server");
-  }
-  if (!req.body.itemCount) {
-    return res.status(400).send("Not all madatary values have been set !"); //validations
-  }
+//   if (!cartEdit) {
+//     return res.status(404).send("the givven id dose not in our server");
+//   }
+//   if (!req.body.itemCount) {
+//     return res.status(400).send("Not all madatary values have been set !"); //validations
+//   }
 
-  cartEdit.set({ itemCount: req.body.itemCount });
-  //cartEdit.set({ itemprice: req.body.itemprice });
+//   cartEdit.set({ itemCount: req.body.itemCount });
+//  // cartEdit.set({ itemprice: req.body.itemprice });
  
-  cartEdit = await cartEdit.save();
+//   cartEdit = await cartEdit.save();
+//   res.send(cartEdit);
+// });
+
+router.put("/:phoneId", async (req, res) => {
+  let itemId = req.params.phoneId;
+  let userId = req.body.userId;
+   if (req.body.itemCount<0) {
+   return res.status(304).send("Minus value");}
+  let cartEdit = await shoppingCartModel.findOneAndUpdate(
+    {itemId: req.params.phoneId, userId: userId},
+    { $set: { itemCount: req.body.itemCount}},
+    { new: true, useFindAndModify: false }
+);
+ 
+  //if (!cartEdit) {
+//    return res.status(404).send("the givven id dose not in our server");
+ // }
+//  if (!req.body.itemCount) {
+ //   return res.status(400).send("Not all madatary values have been set !"); //validations
+ // }
+
+  //cartEdit.set({ itemCount: req.body.itemCount });
+ // cartEdit.set({ itemprice: req.body.itemprice });
+ 
+ // cartEdit = await cartEdit.save();
   res.send(cartEdit);
 });
 
+//Edit cart details
+// router.put("/:itemId", async (req, res) => {
+//   let itemId = req.params.itemId;
+//   let userId = req.body.userId
+//   let cartEdit = await shoppingCartModel.findOneAndUpdate(
+//     {itemId: req.params.itemId, userId: userId},
+//     { $set: { itemCount: req.body.itemCount}},
+//     { new: true, useFindAndModify: false }
+// );
+ 
+//   res.send(cartEdit);
+// });
 
 //delete cart details
-router.delete("/:phoneId", async (req, res) => {
-  let phoneId = await phoneModel.findOneAndDelete({ _id: req.params.phoneId });
-  if (!phoneId) {
-    res.status(404).send("the givven id dose not in our server");
-  }
+router.delete("/:itemId", async (req, res) => {
+  
+  let item = await shoppingCartModel.find({ itemId: req.params.itemId })
+  console.log(item);
+  let phoneId = await shoppingCartModel.findOneAndDelete({ userId: item[0].userId , itemId: req.params.itemId });
   res.send(phoneId);
 });
 
+router.delete("/deletecart/:userId", async (req, res) => {
+  
+  let items = await shoppingCartModel.find({ userId: req.params.userId })
+  console.log(items.length);
+  let phoneId="";
+  for (i = 0; i < items.length; i++) {
+   phoneId = await shoppingCartModel.findOneAndDelete({ itemId: items[i].itemId , userId: req.params.userId });
+}
+  res.send(phoneId);
+});
+
+
+// ProductModel.findOneAndDelete({ brand: 'Nike' }, function (err) {
+//   if(err) console.log(err);
+//   console.log("Successful deletion");
+// });
 module.exports = router;

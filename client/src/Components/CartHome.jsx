@@ -22,7 +22,11 @@ class CartHome extends Component {
         <div>
           <CartSearch />
         </div>
-
+        <div>
+          <button onClick = { () => this.chechkOut()  } >
+            ChechkOut
+          </button>
+        </div>
         <div className="row no-gutters">
           {this.state.cartList.map((item) => (
             <Cart
@@ -30,6 +34,7 @@ class CartHome extends Component {
               phone={item}
               onCount={() => this.updateCartItem(item)}
               onCountDeduct={() => this.deductCartItem(item)}
+              onDelete = { () =>  this.deleteCartItem(item.itemId)}
             />
           ))}
         </div>
@@ -41,28 +46,50 @@ class CartHome extends Component {
     );
   }
 
+  async chechkOut(){
+    console.log(this.state.cartList);
+  await axios.post(`http://localhost:5500/api/checkOut/`, {
+    userId: localStorage.getItem("A"),
+    cartList: this.state.cartList    
+  });
+ this.deletefromCart();
+}
+
+async deletefromCart(){
+    await axios.delete(`http://localhost:5500/api/cart/deletecart/${localStorage.getItem("A")}`, {
+      userId: localStorage.getItem("A")
+    });
+    this.setState({cartList: []});
+  }
+
   // increase the qty
   async updateCartItem(item) {
-    await axios.put(`http://localhost:5500/api/cart/${item._id}`, {
+    await axios.put(`http://localhost:5500/api/cart/${item.itemId}`, {
       itemCount: item.itemCount + 1,
-      //  itemprice: item.itemprice + item.itemprice,
+        userId: localStorage.getItem("A"),
+        itemId: item._id
+    }).catch(function (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
     });
-
-    // let total = item.itemprice + item.itemprice;
-    //console.log(total);
 
     let cartList = [...this.state.cartList];
     let index = cartList.indexOf(item);
     cartList[index] = { ...item };
     cartList[index].itemCount++;
-    //  cartList[index].itemprice++ ;
+    // cartList[index].itemprice++ ;
     this.setState({ cartList: cartList });
   }
 
   // deduct the qty
   async deductCartItem(item) {
-    await axios.put(`http://localhost:5500/api/cart/${item._id}`, {
+    await axios.put(`http://localhost:5500/api/cart/${item.itemId}`, {
       itemCount: item.itemCount - 1,
+      userId: localStorage.getItem("A"),
+      itemId: item._id
     });
 
     let cartList = [...this.state.cartList];
@@ -72,8 +99,18 @@ class CartHome extends Component {
     this.setState({ cartList: cartList });
   }
 
+  async deleteCartItem(itemtodeleteid){
+    let newCart= this.state.cartList.filter(
+      (item) => item.itemId !== itemtodeleteid
+      );
+    await axios.delete(`http://localhost:5500/api/cart/${itemtodeleteid}`, {
+      userId: localStorage.getItem("A")
+    });
+    this.setState({cartList: newCart});
+  }
+
   async componentDidMount() {
-    let { data } = await axios.get(`http://localhost:5500/api/cart/${2}`);
+    let { data } = await axios.get(`http://localhost:5500/api/cart/${7}`);
     console.log(data);
     this.setState({ cartList: data });
   }
