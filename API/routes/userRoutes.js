@@ -53,17 +53,14 @@ router.post("/", async (req, res) => {
 
 router.put("/:uid", async (req, res) => {
   try {
-    let user = await User.findById(req.params.uid);
+    let user = await User.findOne({ uid: req.params.uid });
 
     if (!user) {
       return res
         .status(404)
         .send({ message: "User does not exist in the system" });
     }
-    if (!req.body.shippingAddress) {
-      return res.status(400).send({ message: "Shipping Address is mandatory" });
-    }
-    user.set({ shippingAddress: req.body.shippingAddress });
+    user.set({ address: req.body.address });
 
     user = await user.save();
     res.send(user);

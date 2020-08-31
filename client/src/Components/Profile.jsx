@@ -15,17 +15,20 @@ const Profile = () => {
         uid: sub.split("|", 2)[1],
       };
 
-      axios.post("http://localhost:5500/api/users/", newUser);
+      axios.post("http://localhost:5000/api/users/", newUser);
     } catch (e) {}
   }
 
   async function addUserIfNotExist() {
     try {
       let uid = sub.split("|", 2)[1];
-      await axios.get(`http://localhost:5500/api/users/${uid}`);
+      await axios.get(`http://localhost:5000/api/users/${uid}`);
 
       return true;
     } catch (e) {
+      if (!e.response) {
+        return;
+      }
       if (e.response.status === 404) {
         saveUserData();
       }

@@ -1,20 +1,36 @@
 import React, { Component } from "react";
-//import Fade from "react-reveal/Fade";
+// import Fade from "react-reveal/Fade";
 
 class Checkout extends Component {
-  state = {};
+  state = {
+    data: this.props.data,
+  };
 
   render() {
     return (
-        <div className="card ml-4">
-            <div className="card-body">
+      // <Fade left cascade>
+      //   <main className="container">
+      //     <div>
+      //       <div className="col-sm-4 checkout">
+      //         </div>
+      //     </div>
+      //   </main>
+      // </Fade>
+      <div>
+        <div className="card card-body border-0">
+          <div className="row no-gutters py-2">
+            <div className="card card-body">
+              <div>{this.state.data}</div>
               <h6 className="mb-1">Total Items</h6>
-              <h4 className=" mb-3 txt-right">1</h4>
+              <h4 className=" mb-3 txt-right">{this.props.quantity}</h4>
               <h6 className="mb-1">Total Payment</h6>
-              <h3 className="m-0 txt-right">$134.99</h3>
+              <h3 className="m-0 txt-right">
+                {this.props.currency} {this.props.total}
+              </h3>
               <hr className="my-4" />
               <div className="text-center">
-                <button type="button" className="btn btn-primary mb-2">
+                <button type="button" className="btn btn-primary mb-2"
+                onClick={this.props.checkout}>
                   CHECKOUT
                 </button>
                 <button type="button" className="btn btn-outlineprimary btn-sm">
@@ -23,6 +39,8 @@ class Checkout extends Component {
               </div>
             </div>
           </div>
+        </div>
+      </div>
     );
   }
 }

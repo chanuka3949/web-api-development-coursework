@@ -1,17 +1,29 @@
 import React, { Component } from "react";
-//import Fade from "react-reveal/Fade";
+import Fade from "react-reveal/Fade";
+import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import Loading from "./Loading";
 
 class Cart extends Component {
   state = {};
 
   render() {
     return (
-            
-              <div className="card mb-4">
-                <div className="card-body">
+      <Fade left cascade>
+        <main className="container">
+          {/* <div className="row no-gutters justify-content-center"> */}
+          <div className="row no-gutters">
+            <div className="col-sm-7 pb-3">
+              <div className="card card-body cart-box">
+                <div className="card card-body border-0">
                   <div className="row no-gutters py-2">
                     <div className="col-sm-1 cart-close">
-                      <button className="btn btn-danger"> X </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={this.props.onDelete}
+                      >
+                        {" "}
+                        X{" "}
+                      </button>
                     </div>
                     <div className="col-sm-2">
                       <img
@@ -21,7 +33,7 @@ class Cart extends Component {
                         style={{
                           display: "block",
                           margin: "0px auto 10px",
-                          maxHeight: "200px", 
+                          maxHeight: "200px",
                         }}
                       />
                     </div>
@@ -30,7 +42,7 @@ class Cart extends Component {
                       <h6 className="mb-1">{this.props.phone.itemName}</h6>
                       <strong>
                         <p className="mb-1">
-                          Price: {this.props.phone.itemprice}
+                          Unit Price: {this.props.currency} {this.props.phone.itemprice}
                         </p>
                       </strong>
                     </div>
@@ -74,8 +86,15 @@ class Cart extends Component {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </main>
+      </Fade>
     );
   }
 }
-
-export default Cart;
+export default withAuth0(
+  withAuthenticationRequired(Cart, {
+    onRedirecting: () => <Loading />,
+  })
+);
