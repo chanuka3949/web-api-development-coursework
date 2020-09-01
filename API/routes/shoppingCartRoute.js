@@ -71,10 +71,13 @@ router.post("/", async (req, res) => {
 router.put("/:phoneId", async (req, res) => {
   let itemId = req.params.phoneId;
   let userId = req.body.userId;
+
   if (req.body.itemCount <= 0) {
     return res.status(400).json({ message: "Minus values are not accepted" });
   }
-
+  // if (req.body.itemCount > 5)  {
+  //   return res.status(400).json({ message: "Not in stock" });
+  // } 
   let cartEdit = await shoppingCartModel.findOneAndUpdate(
     { itemId: req.params.phoneId, userId: userId },
     { $set: { itemCount: req.body.itemCount } },

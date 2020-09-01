@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 // import Fade from "react-reveal/Fade";
+import { Redirect } from "react-router-dom";
 
 class Checkout extends Component {
   state = {
@@ -29,8 +30,11 @@ class Checkout extends Component {
               </h3>
               <hr className="my-4" />
               <div className="text-center">
-                <button type="button" className="btn btn-primary mb-2"
-                onClick={this.props.checkout}>
+                <button
+                  type="button"
+                  className="btn btn-primary mb-2"
+                  onClick={this.props.checkout}
+                >
                   CHECKOUT
                 </button>
                 <button type="button" className="btn btn-outlineprimary btn-sm">

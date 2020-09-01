@@ -7,6 +7,7 @@ import Checkout from "./Checkout";
 import Loading from "./Loading";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import ShippingDetails from "./ShippingDetails";
+import { toast } from "react-toastify";
 import Fade from "react-reveal/Fade";
 
 class CartHome extends Component {
@@ -140,16 +141,29 @@ class CartHome extends Component {
     this.calculateTotalAmount();
   }
 
+ 
   async deleteCartItem(itemtodeleteid) {
     let newCart = this.state.cartList.filter(
       (item) => item.itemId !== itemtodeleteid
     );
+    try{
     await axios.delete(`http://localhost:5000/api/cart/${itemtodeleteid}`, {
       userId: localStorage.getItem("A"),
-    });
+    }).then(
+      (response) => {
+        toast.info("Removed");
+      },
+      (error) => {
+        toast.error(error);
+      }
+    );
+  } catch (e) {
+    toast.error(e);
+  }
     this.setState({ cartList: newCart });
     this.calculateTotalAmount();
   }
+
 
   async componentDidMount() {
     try {
