@@ -8,11 +8,9 @@ const express = require("express");
 const cors = require("cors");
 const notFoundHandler = require("./middleware/notFoundHandler");
 const errorHandler = require("./middleware/errorHandler");
+
 const app = express();
 const port = 5000;
-
-//middleware
-//app.use(authenticator);
 
 app.use(express.json());
 app.use(cors());

@@ -8,15 +8,12 @@ class Cart extends Component {
 
   render() {
     return (
+     
       <Fade left cascade>
-        <main className="container">
-          {/* <div className="row no-gutters justify-content-center"> */}
-          <div className="row no-gutters">
-            <div className="col-sm-7 pb-3">
-              <div className="card card-body cart-box">
-                <div className="card card-body border-0">
-                  <div className="row no-gutters py-2">
-                    <div className="col-sm-1 cart-close">
+            <div className="card mb-4 mr-4">
+              <div className="card-body">
+                <div className="row no-gutters py-2">
+                  <div className="col-sm-1 cart-close">
                       <button
                         className="btn btn-danger"
                         onClick={this.props.onDelete}
@@ -86,10 +83,8 @@ class Cart extends Component {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </main>
-      </Fade>
+              </Fade>
+      
     );
   }
 }

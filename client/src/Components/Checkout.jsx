@@ -17,7 +17,7 @@ class Checkout extends Component {
       //   </main>
       // </Fade>
       <div>
-        <div className="card card-body border-0">
+        <div className="card card-body mt-4">
           <div className="row no-gutters py-2">
             <div className="card card-body">
               <div>{this.state.data}</div>
