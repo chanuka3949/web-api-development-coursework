@@ -1,4 +1,5 @@
-log =
+//404 handler
+notFoundHandler =
   ("*",
   (req, res, next) => {
     res.status(404).json({
@@ -7,4 +8,6 @@ log =
     });
   });
 
-module.exports = log;
+
+
+module.exports = notFoundHandler;

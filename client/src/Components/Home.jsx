@@ -5,7 +5,9 @@ import CartSearch from "./CartSearch";
 import NavBar from "./NavBar";
 import Slider from "./Slider";
 import { withAuth0 } from "@auth0/auth0-react";
+import { toast } from "react-toastify";
 var getIP = require("../thirdPartyAPI/IP.js");
+
 
 class Home extends Component {
   state = {
@@ -21,7 +23,7 @@ class Home extends Component {
           <NavBar cartCount={this.state.cartCount} />
         </div>
 
-        <div className="">
+        <div className="container">
           <Slider />
         </div>
 
@@ -93,6 +95,7 @@ class Home extends Component {
     this.setState({ cartItems });
 
     if (update === false) {
+      try {
       await axios.post(`http://localhost:5000/api/cart/`, {
         userId: localStorage.getItem("A"),
         itemId: phone._id,
@@ -101,15 +104,38 @@ class Home extends Component {
         itemprice: phone.price,
         itemimgUrl: phone.imgUrl,
         itemCount: 1,
-      });
+      })
+      .then(
+        (response) => {
+          toast.info("Added to cart");
+        },
+        (error) => {
+          toast.error(error);
+        }
+      );
+    } catch (e) {
+      toast.error(e);
+    }
     }
 
     if (update === true) {
+      try{
       await axios.put(`http://localhost:5000/api/cart/${phone._id}`, {
         itemCount: count,
         userId: localStorage.getItem("A"),
         itemId: phone._id,
-      });
+      })
+      .then(
+        (response) => {
+          toast.info("Added to cart");
+        },
+        (error) => {
+          toast.error(error);
+        }
+      );
+    } catch (e) {
+      toast.error(e);
+    }
     }
   }
 
