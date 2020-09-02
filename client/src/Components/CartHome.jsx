@@ -80,6 +80,7 @@ class CartHome extends Component {
       cartList: this.state.cartList,
     });
     this.deletefromCart();
+    localStorage.removeItem("cart");
   }
 
   async deletefromCart() {
@@ -139,6 +140,16 @@ class CartHome extends Component {
     cartList[index].itemCount--;
     this.setState({ cartList: cartList });
     this.calculateTotalAmount();
+
+    let a = JSON.parse(localStorage.getItem("cart"));
+    for(let i=0;i<a.length;i++){
+      console.log(item.itemId);
+     if(a[i]._id === item.itemId){
+      console.log("hjkhjkgjkgjkgjkgkgjk");
+     console.log(a[i].count);
+     a[i].itemcount = a[i].count--;
+     localStorage.setItem("cart", JSON.stringify(a));
+     }}
   }
 
  
@@ -162,8 +173,29 @@ class CartHome extends Component {
   }
     this.setState({ cartList: newCart });
     this.calculateTotalAmount();
-  }
 
+    let a = JSON.parse(localStorage.getItem("cart"));
+    for(let i=0;i<a.length;i++){
+      console.log(a[i]._id);
+     if(a[i]._id === itemtodeleteid){
+      console.log("hjkhjkgjkgjkgjkgkgjk");
+     console.log(a[i]);
+     a.splice(i, 1); i--;
+     localStorage.setItem("cart", JSON.stringify(a));
+     }}
+ 
+  // let newCart = JSON.parse(localStorage.getItem("cart"));
+  // newCart.forEach((item) => {
+  //   if (item._id === phone._id) {
+  //     item.count++;
+  //     count = item.count;
+  //     alreadyInCart = true;
+  //     update = true;
+  //     this.setState({ cartCount: this.state.cartCount + 1 });
+  //   }
+
+  // localStorage.getItem("cart", JSON.stringify(this.state.cartItems));
+  }
 
   async componentDidMount() {
     try {
