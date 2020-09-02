@@ -12,7 +12,11 @@ class Phone extends Component {
     phoneName:"",
     phoneBrand:"",
     phonePrice:0,
-    resolution:""
+    resolution:"",
+    bluetooth:"",
+    battery_c:"0",
+    os:"",
+    gps:""
   };
 
   openModal = (Phone) => {
@@ -107,19 +111,24 @@ class Phone extends Component {
                       <li>{this.state.resolution}</li>
                     </ul>
 
-                    <h6>Front Camera</h6>
+                    <h6>OS</h6>
                     <ul>
-                      <li>VDIS (Video Digital Image Stabilization)</li>
-                    </ul>
+                      <li>{this.state.os}</li>
+                    </ul> 
 
                     <h6>Battery Capacity</h6>
                     <ul>
-                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>{this.state.battery_c}</li>
                     </ul>
 
-                    <h6>Memory</h6>
+                    <h6>Bluetooth</h6>
                     <ul>
-                      <li>VDIS (Video Digital Image Stabilization)</li>
+                      <li>{this.state.bluetooth}</li>
+                    </ul>
+                    
+                   <h6>GPS</h6>
+                    <ul>
+                      <li>{this.state.gps}</li>
                     </ul>
                   </div>
 
@@ -190,13 +199,18 @@ async loadPhoneDetails() {
     console.log(aa[0])
     localStorage.setItem("specsDeviceName", aa[0].DeviceName);
     localStorage.setItem("specsResolution", aa[0].resolution);
-    localStorage.setItem("specsCameraPrimary", aa[0].primary_);
-    localStorage.setItem("specsCameraSecondary", aa[0].secondary);
+    localStorage.setItem("specsBluetooth", aa[0].bluetooth);
+    localStorage.setItem("specsBattery", aa[0].battery_c);
     localStorage.setItem("specsOS", aa[0].os);
+    localStorage.setItem("specsGps", aa[0].gps);
  
    // if(device2 === localStorage.getItem("specsDeviceName")){
      
  this.setState({resolution : localStorage.getItem("specsResolution")});
+ this.setState({bluetooth : localStorage.getItem("specsBluetooth")});
+ this.setState({battery_c : localStorage.getItem("specsBattery")});
+ this.setState({os : localStorage.getItem("specsOS")});
+ this.setState({gps : localStorage.getItem("specsGps")});
   //}
  }
  

@@ -53,31 +53,21 @@ class Home extends Component {
     );
   }
 
-  addToCart = (phone) => {
-    const cartItems = this.state.cartItems.slice();
-    let alreadyInCart = false;
-    cartItems.forEach((item) => {
-      if (item.id === phone.id) {
-        item.count++;
-        alreadyInCart = true;
-        this.setState({ cartCount: this.state.cartCount + 1 });
-      }
-    });
-    if (!alreadyInCart) {
-      cartItems.push({ ...phone, count: 1 });
-      this.setState({ cartCount: this.state.cartCount + 1 });
-    }
-    this.setState({ cartItems: cartItems });
-
-    this.saveItemsOnCart(this.state.cartItems);
-  };
-
-  async saveItemsOnCart(phone) {
+  async saveItemsOnCart(phone) { 
+  
     localStorage.setItem("A", "7");
-    let update = false;
-    const cartItems = this.state.cartItems.slice();
+  let update = false;  
+  let a = localStorage.getItem("cart");
+  let cartItems;
+ if(a === null){
+ localStorage.setItem("cart", JSON.stringify(this.state.cartItems));
+ console.log("insideeeeeeeeee");
+}else{
+  console.log("ihi"); 
+}
     let alreadyInCart = false;
     let count = 0;
+    cartItems =  JSON.parse(localStorage.getItem("cart"));
     cartItems.forEach((item) => {
       if (item._id === phone._id) {
         item.count++;
@@ -94,6 +84,8 @@ class Home extends Component {
     }
     this.setState({ cartItems });
 
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+
     if (update === false) {
       try {
       await axios.post(`http://localhost:5000/api/cart/`, {
@@ -107,7 +99,10 @@ class Home extends Component {
       })
       .then(
         (response) => {
-          toast.info("Added to cart");
+          console.log(response.status)
+          if(response.status === 200){
+          toast.info("Added to cart")
+        }
         },
         (error) => {
           toast.error(error);
@@ -127,6 +122,7 @@ class Home extends Component {
       })
       .then(
         (response) => {
+          console.log(response.status)
           toast.info("Added to cart");
         },
         (error) => {
@@ -142,35 +138,49 @@ class Home extends Component {
   async componentDidMount() {
     //getIP.getIP();
 
-    let api = await axios.get(`https://api.ipify.org`);
-    console.log(api.data);
-    localStorage.setItem("IP", api.data);
+   // localStorage.removeItem("cart");
+    // let api = await axios.get(`https://api.ipify.org`);
+    // console.log(api.data);
+    // localStorage.setItem("IP", api.data);
 
-    let ipfindKey = "4a726bd0-3169-4ac4-b46b-27c6da6879ee";
-    let IP = "81.142.16.134";
-    let LocationDetails = await axios.get(
-      `https://api.ipfind.com/?ip=${IP}&auth=${ipfindKey}`
-    );
-    localStorage.setItem("Currency", LocationDetails.data.currency);
-    let Currency = LocationDetails.data.currency;
-    console.log(LocationDetails.data.currency);
-    console.log(LocationDetails);
+    // let ipfindKey = "4bb7829c-0573-4555-963f-488c0c938aba";
+    // let IP = localStorage.getItem("IP");
+    // let LocationDetails = await axios.get(
+    //   `https://api.ipfind.com/?ip=${IP}&auth=${ipfindKey}`
+    // );
+    // localStorage.setItem("Currency", LocationDetails.data.currency);
+    // let Currency = LocationDetails.data.currency;
+    // console.log(LocationDetails.data.currency);
+    // console.log(LocationDetails);
 
-    let fixerApiAccessKey = "d06e1099c3d4e07d044c77a892774bd8";
-    let CurrencyData = await axios.get(
-      `https://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
-    );
-    CurrencyData = CurrencyData.data.rates;
+    // let fixerApiAccessKey = "d06e1099c3d4e07d044c77a892774bd8";
+    // let CurrencyData = await axios.get(
+    //   `https://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
+    // );
+    // CurrencyData = CurrencyData.data.rates;
 
-    for (var i in CurrencyData) {
-      if (i === Currency) {
-        console.log(CurrencyData[i]);
-        localStorage.setItem("CurrencyRate", CurrencyData[i]);
-      }
-    }
+    // for (var i in CurrencyData) {
+    //   if (i === Currency) {
+    //     console.log(CurrencyData[i]);
+    //     localStorage.setItem("CurrencyRate", CurrencyData[i]);
+    //   }
+    // }
 
     let { data } = await axios.get("http://localhost:5000/api/phones/");
     this.setState({ phoneList: data });
+
+    let newCount= 0;
+    let a = JSON.parse(localStorage.getItem("cart"));
+if(a !== null){
+    for(let i=0;i<a.length;i++){
+     if(a[i]){
+     console.log(a[i].count);  
+     newCount = newCount + a[i].count;
+    }
+    }
+    console.log(newCount);
+    this.setState({ cartCount: newCount });
+  }
   }
 }
 
