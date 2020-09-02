@@ -12,10 +12,10 @@ class NavBar extends Component {
         <nav className="header_header__3p7LH">
           <Link to="/">Store</Link>
           <Link to="/about">About Us</Link>
-          <Link to="/about"> Contact Us</Link>
+          <Link to="/contact-us"> Contact Us</Link>
           <Link
             hidden={!isAuthenticated}
-            to={`/users/${user.sub.split("|", 2)[1]}`}
+            to={isAuthenticated ? `/users/${user.sub.split("|", 2)[1]}` : ``}
           >
             User Profile
           </Link>
