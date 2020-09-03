@@ -1,39 +1,19 @@
 const mongoose = require('mongoose');
 
 const checkOutSchema = new mongoose.Schema({
-    
+ 
     userId: {
         type: String,
         required: true
     },
 
-    itemId : {
-        type: String,
+    items : {
+        type: Array,
         required: true
     },
     
-    itemName: {
+    total: {
         type: String,
-        required: true
-    },
-    
-    itembrand : {
-        type: String,
-        required: true
-    },
-
-    itemprice : {
-        type: Number,       
-        required: true
-    },
-
-    itemimgUrl:{
-        type: String,
-       
-    },
-
-    itemCount : {
-        type: Number,       
         required: true
     },
 });

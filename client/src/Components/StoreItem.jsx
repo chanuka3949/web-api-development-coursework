@@ -142,7 +142,7 @@ class Phone extends Component {
                     <button
                       className="button primary btn btn-primary"
                       onClick={() => {
-                     //   this.props.onaddToCart();
+                        this.props.onaddToCart();
                      //   this.closeModal();
                       }}
                     >

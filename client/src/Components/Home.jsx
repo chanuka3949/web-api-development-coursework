@@ -84,6 +84,9 @@ class Home extends Component {
     }
     this.setState({ cartItems });
 
+    this.state.cartItems.push({'productId' : 'productId' + 1, image : '<imageLink>'});
+
+    console.log(this.state.cartItems);
     localStorage.setItem("cart", JSON.stringify(cartItems));
 
     if (update === false) {
@@ -138,7 +141,7 @@ class Home extends Component {
   async componentDidMount() {
     //getIP.getIP();
 
-   // localStorage.removeItem("cart");
+    localStorage.removeItem("cart");
     // let api = await axios.get(`https://api.ipify.org`);
     // console.log(api.data);
     // localStorage.setItem("IP", api.data);
