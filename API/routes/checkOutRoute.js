@@ -28,40 +28,71 @@ router.get("/:phoneId", async (req, res) => {
 
 
 //create records
-router.post("/", async (req, res) => {
-    // if (!req.body.userId) {
-    //   return res.status(400).send("Not all madatary values have benn set !"); //validations
-    // }
-       let cartList = req.body.cartList; 
-       let userId = req.body.userId;       
-       var newCartList ={
-         userId:"",
-         itemId: "",
-         itemName:"",
-         itembrand:"",
-         itemprice: 0,
-         itemimgUrl: "",
-         itemCount: 0,
-       };
-       let newCartList2=[]; 
+// router.post("/", async (req, res) => {
+//     // if (!req.body.userId) {
+//     //   return res.status(400).send("Not all madatary values have benn set !"); //validations
+//     // }
+//        let cartList = req.body.cartList; 
+//        let userId = req.body.userId;       
+//        var newCartList ={
+//          userId:"",
+//          itemId: "",
+//          itemName:"",
+//          itembrand:"",
+//          itemprice: 0,
+//          itemimgUrl: "",
+//          itemCount: 0,
+//        };
+//        let newCartList2=[]; 
     
-      for (i = 0; i < cartList.length; i++) {
-        newCartList = new Object();
-         newCartList.userId = cartList[i].userId;
-         newCartList.itemId = cartList[i].itemId;
-         newCartList.itemName = cartList[i].itemName;
-         newCartList.itembrand = cartList[i].itembrand;
-         newCartList.itemprice = cartList[i].itemprice;
-         newCartList.itemimgUrl =  cartList[i].itemimgUrl;
-         newCartList.itemCount = cartList[i].itemCount;
-         newCartList2[i] = newCartList;
-      }
-      console.log(newCartList2);
+//       for (i = 0; i < cartList.length; i++) {
+//         newCartList = new Object();
+//          newCartList.userId = cartList[i].userId;
+//          newCartList.itemId = cartList[i].itemId;
+//          newCartList.itemName = cartList[i].itemName;
+//          newCartList.itembrand = cartList[i].itembrand;
+//          newCartList.itemprice = cartList[i].itemprice;
+//          newCartList.itemimgUrl =  cartList[i].itemimgUrl;
+//          newCartList.itemCount = cartList[i].itemCount;
+//          newCartList2[i] = newCartList;
+//       }
+//       console.log(newCartList2);
       
-      let a = await checkOutModel.insertMany(newCartList2)
-      res.send(a);
-    }); 
+//       let a = await checkOutModel.insertMany(newCartList2)
+//       res.send(a);
+//     }); 
   
+router.post("/", async (req, res) => {
+  // if (!req.body.userId) {
+  //   return res.status(400).send("Not all madatary values have benn set !"); //validations
+  // }
+  //try{
+     let cartList = req.body.cartList; 
+     let userId = req.body.userId;   
+     let total = req.body.total;           
+     var newCartList ={
+       userId:"",
+       items: [],
+       total: 0,
+     };
+     let newCartList2=[]; 
+  
+    for (i = 0; i < cartList.length; i++) {
+    newCartList.items.push(cartList[i])
+    }
+
+    newCartList.userId = userId;
+    newCartList.total = newCartList;
+
+    let newCheckOut = new checkOutModel(newCartList);
+    console.log(newCartList);
+    
+    let a = await newCheckOut.save()
+     res.send(a);
+  // } catch (e) {
+  //     return res.status(500).send(e.message);
+  //     }
+  }); 
   
 
 //Edit phone details
