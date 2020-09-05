@@ -8,7 +8,6 @@ import Loading from "./Loading";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import ShippingDetails from "./ShippingDetails";
 import { toast } from "react-toastify";
-import Fade from "react-reveal/Fade";
 
 class CartHome extends Component {
   state = {
@@ -199,7 +198,7 @@ class CartHome extends Component {
 
   async componentDidMount() {
     try {
-      let { data } = await axios.get(`http://localhost:5000/api/cart/${7}`);
+      let { data } = await axios.get(`http://localhost:5000/api/cart/${localStorage.getItem("A")}`);
       console.log(data);
       this.setState({ cartList: data });
       this.calculateTotalAmount();
