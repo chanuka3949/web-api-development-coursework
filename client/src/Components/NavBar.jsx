@@ -20,7 +20,7 @@ class NavBar extends Component {
             User Profile
           </Link>
           <Auth />
-          <a href="/cart">
+          <Link to="/cart">
             {" "}
             <img
               src="cart-icon.png"
@@ -30,7 +30,7 @@ class NavBar extends Component {
             Cart {"("}
             {this.props.cartCount}
             {")"}
-          </a>
+          </Link>
         </nav>
       </div>
     );

@@ -54,8 +54,9 @@ class Home extends Component {
   }
 
   async saveItemsOnCart(phone) { 
-  
-    localStorage.setItem("A", "7");
+    // const {user} = this.props.auth0;
+    // localStorage.setItem("A", user.sub.split("|", 2)[1]);
+  // localStorage.setItem("A", "7");
   let update = false;  
   let a = localStorage.getItem("cart");
   let cartItems;
@@ -141,7 +142,8 @@ class Home extends Component {
   async componentDidMount() {
     //getIP.getIP();
 
-    localStorage.removeItem("cart");
+    //localStorage.removeItem("A");
+    //localStorage.removeItem("cart");
     // let api = await axios.get(`https://api.ipify.org`);
     // console.log(api.data);
     // localStorage.setItem("IP", api.data);

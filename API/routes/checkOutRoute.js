@@ -1,5 +1,7 @@
 const express = require("express");
 const checkOutModel = require("../models/checkOutModel");
+const User = require("../models/userModel");
+const MailManager = require("../services/MailManager");
 const router = express.Router();
 
 // get all phones details
@@ -15,7 +17,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 // get phones details according to the givven id
 router.get("/:phoneId", async (req, res) => {
   let phoneData = await checkOutModel.findById(req.params.phoneId);
@@ -26,14 +27,13 @@ router.get("/:phoneId", async (req, res) => {
   res.send(phoneData);
 });
 
-
 //create records
 // router.post("/", async (req, res) => {
 //     // if (!req.body.userId) {
 //     //   return res.status(400).send("Not all madatary values have benn set !"); //validations
 //     // }
-//        let cartList = req.body.cartList; 
-//        let userId = req.body.userId;       
+//        let cartList = req.body.cartList;
+//        let userId = req.body.userId;
 //        var newCartList ={
 //          userId:"",
 //          itemId: "",
@@ -43,8 +43,8 @@ router.get("/:phoneId", async (req, res) => {
 //          itemimgUrl: "",
 //          itemCount: 0,
 //        };
-//        let newCartList2=[]; 
-    
+//        let newCartList2=[];
+
 //       for (i = 0; i < cartList.length; i++) {
 //         newCartList = new Object();
 //          newCartList.userId = cartList[i].userId;
@@ -57,43 +57,46 @@ router.get("/:phoneId", async (req, res) => {
 //          newCartList2[i] = newCartList;
 //       }
 //       console.log(newCartList2);
-      
+
 //       let a = await checkOutModel.insertMany(newCartList2)
 //       res.send(a);
-//     }); 
-  
+//     });
+
 router.post("/", async (req, res) => {
   // if (!req.body.userId) {
   //   return res.status(400).send("Not all madatary values have benn set !"); //validations
   // }
   //try{
-     let cartList = req.body.cartList; 
-     let userId = req.body.userId;   
-     let total = req.body.total;           
-     var newCartList ={
-       userId:"",
-       items: [],
-       total: 0,
-     };
-     let newCartList2=[]; 
-  
-    for (i = 0; i < cartList.length; i++) {
-    newCartList.items.push(cartList[i])
-    }
+  let cartList = req.body.cartList;
+  let userId = req.body.userId;
+  let total = req.body.total;
+  var newCartList = {
+    userId: "",
+    items: [],
+    total: 0,
+  };
 
-    newCartList.userId = userId;
-    newCartList.total = newCartList;
+  for (i = 0; i < cartList.length; i++) {
+    newCartList.items.push(cartList[i]);
+  }
 
-    let newCheckOut = new checkOutModel(newCartList);
-    console.log(newCartList);
-    
-    let a = await newCheckOut.save()
-     res.send(a);
+  newCartList.userId = userId;
+  newCartList.total = 12;
+
+  let newCheckOut = new checkOutModel(newCartList);
+
+  let user = await User.findOne({ uid: userId });
+
+  let order = await newCheckOut.save();
+
+  let manager = new MailManager();
+  manager.preparePDF(order, user);
+
+  res.send(order);
   // } catch (e) {
   //     return res.status(500).send(e.message);
   //     }
-  }); 
-  
+});
 
 //Edit phone details
 router.put("/:phoneId", async (req, res) => {
@@ -105,25 +108,25 @@ router.put("/:phoneId", async (req, res) => {
   if (!req.body.name) {
     return res.status(400).send("Not all madatary values have been set !"); //validations
   }
-        phone.set({ name: req.body.name });
-        phone.set({ brand: req.body.brand });
-        phone.set({ price: req.body.price });
-        phone.set({ imgUrl: req.body.imgUrl });
-        phone.set({ stockCount: req.body.stockCount });
+  phone.set({ name: req.body.name });
+  phone.set({ brand: req.body.brand });
+  phone.set({ price: req.body.price });
+  phone.set({ imgUrl: req.body.imgUrl });
+  phone.set({ stockCount: req.body.stockCount });
 
   phone = await phone.save();
   res.send(phone);
 });
 
-
 //delete cart details
 router.delete("/:itemId", async (req, res) => {
-  
-  let item = await checkOutModel.find({ itemId: req.params.itemId })
-  console.log(item);
-  let phoneId = await shoppingCartModel.findOneAndDelete({ userId: item[0].userId , itemId: req.params.itemId });
+  let item = await checkOutModel.find({ itemId: req.params.itemId });
+
+  let phoneId = await shoppingCartModel.findOneAndDelete({
+    userId: item[0].userId,
+    itemId: req.params.itemId,
+  });
   res.send(phoneId);
 });
-
 
 module.exports = router;
