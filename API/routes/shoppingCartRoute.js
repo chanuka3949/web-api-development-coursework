@@ -27,10 +27,11 @@ router.get("/:userId", async (req, res) => {
   res.send(shoppingCartData);
 });
 
-//create records
+//adding to shopping cart
 router.post("/", async (req, res) => {
+
   if (!req.body.userId) {
-    return res.status(400).send("Not all madatary values have benn set !"); //validations
+    return res.status(400).send("Not all madatary values have benn set !");
   }
   try {
     let cartDataToBeAddedDb = new shoppingCartModel({
@@ -83,8 +84,7 @@ router.put("/:phoneId", async (req, res) => {
     { $set: { itemCount: req.body.itemCount } },
     { new: true, useFindAndModify: false }
   );
-
- 
+  
   res.send(cartEdit);
 });
 

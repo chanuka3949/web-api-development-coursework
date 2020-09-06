@@ -77,6 +77,7 @@ class CartHome extends Component {
     await axios.post(`http://localhost:5000/api/checkOut/`, {
       userId: localStorage.getItem("A"),
       cartList: this.state.cartList,
+      total: 7
     });
     this.deletefromCart();
     localStorage.removeItem("cart");
@@ -99,7 +100,7 @@ class CartHome extends Component {
       .put(`http://localhost:5000/api/cart/${item.itemId}`, {
         itemCount: item.itemCount + 1,
         userId: localStorage.getItem("A"),
-        itemId: item._id,
+        itemId: item._id
       })
       .catch(function (error) {
         if (error.response) {
@@ -116,6 +117,17 @@ class CartHome extends Component {
     // cartList[index].itemprice++ ;
     this.setState({ cartList: cartList });
     this.calculateTotalAmount();
+
+    let a = JSON.parse(localStorage.getItem("cart"));
+    for(let i=0;i<a.length;i++){
+      console.log(item.itemId);
+     if(a[i]._id === item.itemId){
+      console.log("hjkhjkgjkgjkgjkgkgjk");
+     console.log(a[i].count);
+     a[i].itemcount = a[i].count++;
+     localStorage.setItem("cart", JSON.stringify(a));
+     }
+    }
   }
 
   // deduct the qty
