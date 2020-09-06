@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "./Components/Loading";
-import NavBar from "./Components/NavBar";
 import { Route } from "react-router-dom";
 import Home from "./Components/Home/Home";
 import CartHome from "./Components/Cart/CartHome";
@@ -17,7 +16,6 @@ function App() {
 
   return (
     <React.Fragment>
-      {/* <NavBar /> */}
       <Profile />
       <ToastContainer />
       <Route path="/users/:id" component={UserProfile} />

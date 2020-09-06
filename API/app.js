@@ -8,9 +8,10 @@ const express = require("express");
 const cors = require("cors");
 const notFoundHandler = require("./middleware/notFoundHandler");
 const errorHandler = require("./middleware/errorHandler");
+require('dotenv').config()
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5500;
 
 app.use(express.json());
 app.use(cors());
@@ -25,7 +26,7 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 mongoose
-  .connect("mongodb://localhost/phonedb", {
+  .connect(process.env.MONGO_DB_PATH, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

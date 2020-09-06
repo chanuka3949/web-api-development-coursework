@@ -52,19 +52,16 @@ class Home extends Component {
     );
   }
 
-  async saveItemsOnCart(phone) { 
-    // const {user} = this.props.auth0;
-    // localStorage.setItem("A", user.sub.split("|", 2)[1]);
-  // localStorage.setItem("A", "7");
-  let update = false;  
-  let a = localStorage.getItem("cart");
-  let cartItems;
- if(a === null){
- localStorage.setItem("cart", JSON.stringify(this.state.cartItems));
- console.log("insideeeeeeeeee");
-}else{
-  console.log("ihi"); 
-}
+  async saveItemsOnCart(phone) {
+    let update = false;
+    let a = localStorage.getItem("cart");
+    let cartItems;
+    if (a === null) {
+      localStorage.setItem("cart", JSON.stringify(this.state.cartItems));
+      console.log("insideeeeeeeeee");
+    } else {
+      console.log("ihi");
+    }
     let alreadyInCart = false;
     let count = 0;
     cartItems = JSON.parse(localStorage.getItem("cart"));
@@ -142,11 +139,21 @@ class Home extends Component {
       }
     }
   }
-
+  getPhoneList() {
+    axios.get("http://localhost:5000/api/phones/").then(
+      (response) => {
+        this.setState({ phoneList: response.data });
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+  }
   async componentDidMount() {
-    try { 
-    //  localStorage.removeItem("cart");
-    //  localStorage.removeItem("A");
+    try {
+      this.getPhoneList();
+      //  localStorage.removeItem("cart");
+      //  localStorage.removeItem("A");
       // //geting the IP
       // const api = await axios.get(`https://api.ipify.org`);
       // console.log(api.data);
@@ -154,10 +161,10 @@ class Home extends Component {
 
       // //getting location details and saved the currency type
       // let Currency;
-     
+
       // const IP = localStorage.getItem("IP");
       // const LocationDetails = await axios.get(
-       //  `https://api.ipfind.com/?ip=${IP}&auth=${apiconfig.ipfindKey}`
+      //  `https://api.ipfind.com/?ip=${IP}&auth=${apiconfig.ipfindKey}`
       // );
 
       // if (LocationDetails !== null) {
@@ -183,9 +190,6 @@ class Home extends Component {
       //     }
       //   }
       // }
-
-      let { data } = await axios.get("http://localhost:5000/api/phones/");
-      this.setState({ phoneList: data });
 
       let newCount = 0;
       let cart = JSON.parse(localStorage.getItem("cart"));

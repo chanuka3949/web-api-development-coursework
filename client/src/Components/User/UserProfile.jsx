@@ -4,6 +4,7 @@ import axios from "axios";
 import Loading from "../Loading";
 import { CountryDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
+import NavBar from "../NavBar";
 
 class UserProfile extends Component {
   state = {
@@ -39,65 +40,76 @@ class UserProfile extends Component {
     });
   };
 
-  async componentDidMount() {
-    try {
-      let { data } = await axios.get(
-        `http://localhost:5000/api/users/${this.props.match.params.id}`
-      );
-      this.setState({
-        picture: data.picture,
-        email: data.email,
-        name: data.name,
-        address1: data.address.address1,
-        address2: data.address.address2,
-        city: data.address.city,
-        country: data.address.country,
-        state: data.address.state,
-        contactNumber: data.address.contactNumber,
-        postalCode: data.address.postalCode,
-      });
-    } catch (e) {
-      console.log(e.message);
-    }
+  componentDidMount() {
+    this.getProfileData();
   }
-
-  async saveUserDetails() {
-    const { user } = this.props.auth0;
-    try {
-      let userData = {
-        name: this.state.name,
-        address: {
-          address1: this.state.address1,
-          address2: this.state.address2,
-          city: this.state.city,
-          country: this.state.country,
-          state: this.state.state,
-          contactNumber: this.state.contactNumber,
-          postalCode: this.state.postalCode,
-        },
-      };
-      axios
-        .put(
-          `http://localhost:5000/api/users/${user.sub.split("|", 2)[1]}`,
-          userData
-        )
-        .then(
-          (response) => {
-            toast.info("User Details Updated");
-          },
-          (error) => {
-            toast.error(error);
+  getProfileData() {
+    axios
+      .get(`http://localhost:5000/api/users/${this.props.match.params.id}`)
+      .then(
+        (response) => {
+          if (typeof response.data.address === "undefined") {
+            this.setState({
+              picture: response.data.picture,
+              email: response.data.email,
+              name: response.data.name,
+            });
+          } else {
+            this.setState({
+              picture: response.data.picture,
+              email: response.data.email,
+              name: response.data.name,
+              address1: response.data.address.address1,
+              address2: response.data.address.address2,
+              city: response.data.address.city,
+              country: response.data.address.country,
+              state: response.data.address.state,
+              contactNumber: response.data.address.contactNumber,
+              postalCode: response.data.address.postalCode,
+            });
           }
-        );
-    } catch (e) {
-      toast.error(e);
-    }
+        },
+        (error) => {
+          toast.error(error.message);
+        }
+      );
+  }
+  saveUserDetails() {
+    const { user } = this.props.auth0;
+    let userData = {
+      name: this.state.name,
+      address: {
+        address1: this.state.address1,
+        address2: this.state.address2,
+        city: this.state.city,
+        country: this.state.country,
+        state: this.state.state,
+        contactNumber: this.state.contactNumber,
+        postalCode: this.state.postalCode,
+      },
+    };
+    axios
+      .put(
+        `http://localhost:5000/api/users/${user.sub.split("|", 2)[1]}`,
+        userData
+      )
+      .then(
+        (response) => {
+          toast.info("User Details Updated");
+        },
+        (error) => {
+          toast.error(error.message);
+        }
+      );
   }
 
   render() {
     const { country } = this.state;
     return (
       <React.Fragment>
+        <div>
+          <NavBar />
+        </div>
         <div className="card-deck">
           <div
             className="card border-0"

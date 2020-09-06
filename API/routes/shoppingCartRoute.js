@@ -7,11 +7,15 @@ router.get("/", async (req, res) => {
   try {
     let phones = await phoneModel.find();
     if (!phones) {
+      throw createError(404, "No users in the system");
       return res.status(404).send({ message: "No Cart Data Available" });
     }
     res.send(phones);
-  } catch (e) {
-    res.status(500).send({ message: e.message });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 

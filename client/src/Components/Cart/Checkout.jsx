@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 // import Fade from "react-reveal/Fade";
-import { Redirect } from "react-router-dom";
 
 class Checkout extends Component {
   state = {

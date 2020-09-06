@@ -1,39 +1,42 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
+const createError = require("http-errors");
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     let users = await User.find();
     if (!users) {
-      return res.status(404).send({ message: "No users in the system" });
+      throw createError(404, "No users in the system");
     }
     res.send(users);
-  } catch (e) {
-    res.status(500).send({ message: e.message });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
-router.get("/:uid", async (req, res) => {
+router.get("/:uid", async (req, res, next) => {
   try {
     let user = await User.findOne({ uid: req.params.uid });
 
     if (!user) {
-      return res
-        .status(404)
-        .send({ message: "User does not exist in the system" });
+      throw createError(404, "User does not exist in the system");
     }
     res.send(user);
-  } catch (e) {
-    res.status(500).send({ message: e.message });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   if (!req.body.uid || !req.body.name || !req.body.email) {
-    return res
-      .status(400)
-      .send({ message: "Mandatory fields cannot be null or empty" });
+    throw createError(400, "Mandatory fields cannot be null or empty");
   }
   try {
     let newUser = new User({
@@ -46,26 +49,33 @@ router.post("/", async (req, res) => {
 
     let user = await newUser.save();
     res.send(user);
-  } catch (e) {
-    res.status(500).send(e.message);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
-router.put("/:uid", async (req, res) => {
+router.put("/:uid", async (req, res, next) => {
   try {
     let user = await User.findOne({ uid: req.params.uid });
 
     if (!user) {
-      return res
-        .status(404)
-        .send({ message: "User does not exist in the system" });
+      throw createError(404, "User does not exist in the system");
     }
-    user.set({ address: req.body.address });
-
+    if (typeof req.body.name === "undefined") {
+      user.set({ address: req.body.address });
+    } else {
+      user.set({ address: req.body.address, name: req.body.name });
+    }
     user = await user.save();
     res.send(user);
-  } catch (e) {
-    res.status(500).send(e.message);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 

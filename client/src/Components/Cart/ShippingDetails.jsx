@@ -16,36 +16,56 @@ class ShippingDetails extends Component {
     postalCode: "",
   };
 
-  async saveShippingDetails() {
+  saveShippingDetails() {
     const { user } = this.props.auth0;
-    try {
-      let addressData = {
-        address: {
-          address1: this.state.address1,
-          address2: this.state.address2,
-          city: this.state.city,
-          country: this.state.country,
-          state: this.state.state,
-          contactNumber: this.state.contactNumber,
-          postalCode: this.state.postalCode,
+    let addressData = {
+      address: {
+        address1: this.state.address1,
+        address2: this.state.address2,
+        city: this.state.city,
+        country: this.state.country,
+        state: this.state.state,
+        contactNumber: this.state.contactNumber,
+        postalCode: this.state.postalCode,
+      },
+    };
+    axios
+      .put(
+        `http://localhost:5000/api/users/${user.sub.split("|", 2)[1]}`,
+        addressData
+      )
+      .then(
+        (response) => {
+          toast.success("Shipping Address Updated");
         },
-      };
-      axios
-        .put(
-          `http://localhost:5000/api/users/${user.sub.split("|", 2)[1]}`,
-          addressData
-        )
-        .then(
-          (response) => {
-            toast.info("Shipping Address Updated");
-          },
-          (error) => {
-            toast.error(error);
-          }
-        );
-    } catch (e) {
-      toast.error(e);
-    }
+        (error) => {
+          toast.error(error.message);
+          this.getShippingDetails();
+        }
+      );
+  }
+  getShippingDetails() {
+    const { user } = this.props.auth0;
+    const uid = user.sub.split("|", 2)[1];
+    axios.get(`http://localhost:5000/api/users/${uid}`).then(
+      (response) => {
+        if (typeof response.data.address === "undefined") {
+          return;
+        }
+        this.setState({
+          address1: response.data.address.address1,
+          address2: response.data.address.address2,
+          city: response.data.address.city,
+          country: response.data.address.country,
+          state: response.data.address.state,
+          contactNumber: response.data.address.contactNumber,
+          postalCode: response.data.address.postalCode,
+        });
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
   }
 
   selectCountry(val) {
@@ -67,21 +87,8 @@ class ShippingDetails extends Component {
       postalCode: "",
     });
   };
-  async componentDidMount() {
-    const { user } = this.props.auth0;
-    const uid = user.sub.split("|", 2)[1];
-    let { data: userData } = await axios.get(
-      `http://localhost:5000/api/users/${uid}`
-    );
-    this.setState({
-      address1: userData.address.address1,
-      address2: userData.address.address2,
-      city: userData.address.city,
-      country: userData.address.country,
-      state: userData.address.state,
-      contactNumber: userData.address.contactNumber,
-      postalCode: userData.address.postalCode,
-    });
+  componentDidMount() {
+    this.getShippingDetails();
   }
 
   render() {

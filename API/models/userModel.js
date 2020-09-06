@@ -1,5 +1,15 @@
 const mongoose = require("mongoose");
 
+const addressSchema = new mongoose.Schema({
+  address1: { type: String, required: true },
+  address2: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, default: null },
+  country: { type: String, required: true },
+  postalCode: { type: String, required: true },
+  contactNumber: { type: Number, required: true },
+});
+
 const userSchema = new mongoose.Schema({
   uid: {
     type: String,
@@ -17,13 +27,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   address: {
-    address1: {type: String, default: null},
-    address2: {type: String, default: null},
-    city: {type: String, default: null},
-    state: {type: String, default: null},
-    country: {type: String, default: null},
-    postalCode: {type: String, default: null},
-    contactNumber: {type: String, default: null},
+    type: addressSchema,
   },
 });
 
