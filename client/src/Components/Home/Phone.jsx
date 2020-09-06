@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
 import httpreq from "httpreq";
 import { withAuth0 } from "@auth0/auth0-react";
+import apiconfig from "../../api_config.json";
 
 class Phone extends Component {
   state = {
@@ -166,7 +167,6 @@ class Phone extends Component {
       let device2 = localStorage.getItem("phoneName");
       let brand2 = localStorage.getItem("phoneBrand");
       //var fonoapi = require('./fono.js');
-      var token = "89c8ee385aa83b00e32cbe67d821b4d0934d87a4c6d57a9c";
 
       console.log(localStorage.getItem("phoneBrand"));
       this.setState({ resolution: localStorage.getItem("specsResolution") });
@@ -176,7 +176,7 @@ class Phone extends Component {
 
       var url = "https://fonoapi.freshpixl.com/v1/getdevice";
       let options = {
-        parameters: { device: device2, token: token },
+        parameters: { device: device2, token: apiconfig.fonoToken },
         timeout: 2900,
       };
 

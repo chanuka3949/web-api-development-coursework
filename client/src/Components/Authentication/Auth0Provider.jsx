@@ -1,7 +1,7 @@
 import React from "react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
-import config from "../auth_config.json";
+import config from "../../auth_config.json";
 
 const Auth0ProviderWithHistory = ({ children }) => {
   const history = useHistory();

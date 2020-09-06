@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import { CountryDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 
