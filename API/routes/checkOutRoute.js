@@ -63,39 +63,43 @@ router.get("/:phoneId", async (req, res) => {
 //     });
 
 router.post("/", async (req, res) => {
-  // if (!req.body.userId) {
-  //   return res.status(400).send("Not all madatary values have benn set !"); //validations
-  // }
-  //try{
-  let cartList = req.body.cartList;
-  let userId = req.body.userId;
-  let total = req.body.total;
-  var newCartList = {
-    userId: "",
-    items: [],
-    total: 0,
-  };
+  try {
+    let user = await User.findOne({ uid: req.body.userId });
 
-  for (i = 0; i < cartList.length; i++) {
-    newCartList.items.push(cartList[i]);
-  }
+    if (!user.address) {
+      return res.status(400).send({ message: "Please Save The Address" });
+    }
 
-  newCartList.userId = userId;
-  newCartList.total = 12;
+    if (!req.body.cartList) {
+      return res.status(400).send({ message: "Please Add Items to Cart" });
+    }
 
-  let newCheckOut = new checkOutModel(newCartList);
+    let cartList = req.body.cartList;
+    let userId = req.body.userId;
+    let total = req.body.total;
+    var newCartList = {
+      userId: "",
+      items: [],
+      total: 0,
+    };
 
-  let user = await User.findOne({ uid: userId });
+    for (i = 0; i < cartList.length; i++) {
+      newCartList.items.push(cartList[i]);
+    }
 
-  let order = await newCheckOut.save();
+    newCartList.userId = userId;
+    newCartList.total = total;
+let newCheckOut = new checkOutModel(newCartList);
+
+let order = await newCheckOut.save();
 
   let manager = new MailManager();
   manager.preparePDF(order, user);
 
   res.send(order);
-  // } catch (e) {
-  //     return res.status(500).send(e.message);
-  //     }
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
 });
 
 //Edit phone details
@@ -121,7 +125,6 @@ router.put("/:phoneId", async (req, res) => {
 //delete cart details
 router.delete("/:itemId", async (req, res) => {
   let item = await checkOutModel.find({ itemId: req.params.itemId });
-
   let phoneId = await shoppingCartModel.findOneAndDelete({
     userId: item[0].userId,
     itemId: req.params.itemId,

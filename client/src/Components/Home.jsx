@@ -6,8 +6,6 @@ import NavBar from "./NavBar";
 import Slider from "./Slider";
 import { withAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
-var getIP = require("../thirdPartyAPI/IP.js");
-
 
 class Home extends Component {
   state = {
@@ -68,7 +66,7 @@ class Home extends Component {
 }
     let alreadyInCart = false;
     let count = 0;
-    cartItems =  JSON.parse(localStorage.getItem("cart"));
+    cartItems = JSON.parse(localStorage.getItem("cart"));
     cartItems.forEach((item) => {
       if (item._id === phone._id) {
         item.count++;
@@ -85,107 +83,124 @@ class Home extends Component {
     }
     this.setState({ cartItems });
 
-    this.state.cartItems.push({'productId' : 'productId' + 1, image : '<imageLink>'});
+    this.state.cartItems.push({
+      productId: "productId" + 1,
+      image: "<imageLink>",
+    });
 
     console.log(this.state.cartItems);
     localStorage.setItem("cart", JSON.stringify(cartItems));
 
     if (update === false) {
       try {
-      await axios.post(`http://localhost:5000/api/cart/`, {
-        userId: localStorage.getItem("A"),
-        itemId: phone._id,
-        itemName: phone.name,
-        itembrand: phone.brand,
-        itemprice: phone.price,
-        itemimgUrl: phone.imgUrl,
-        itemCount: 1,
-      })
-      .then(
-        (response) => {
-          console.log(response.status)
-          if(response.status === 200){
-          toast.info("Added to cart")
-        }
-        },
-        (error) => {
-          toast.error(error);
-        }
-      );
-    } catch (e) {
-      toast.error(e);
-    }
+        await axios
+          .post(`http://localhost:5000/api/cart/`, {
+            userId: localStorage.getItem("A"),
+            itemId: phone._id,
+            itemName: phone.name,
+            itembrand: phone.brand,
+            itemprice: phone.price,
+            itemimgUrl: phone.imgUrl,
+            itemCount: 1,
+          })
+          .then(
+            (response) => {
+              console.log(response.status);
+              if (response.status === 200) {
+                toast.info("Added to cart");
+              }
+            },
+            (error) => {
+              toast.error(error);
+            }
+          );
+      } catch (e) {
+        toast.error(e);
+      }
     }
 
     if (update === true) {
-      try{
-      await axios.put(`http://localhost:5000/api/cart/${phone._id}`, {
-        itemCount: count,
-        userId: localStorage.getItem("A"),
-        itemId: phone._id,
-      })
-      .then(
-        (response) => {
-          console.log(response.status)
-          toast.info("Added to cart");
-        },
-        (error) => {
-          toast.error(error);
-        }
-      );
-    } catch (e) {
-      toast.error(e);
-    }
+      try {
+        await axios
+          .put(`http://localhost:5000/api/cart/${phone._id}`, {
+            itemCount: count,
+            userId: localStorage.getItem("A"),
+            itemId: phone._id,
+          })
+          .then(
+            (response) => {
+              console.log(response.status);
+              toast.info("Added to cart");
+            },
+            (error) => {
+              toast.error(error);
+            }
+          );
+      } catch (e) {
+        toast.error(e);
+      }
     }
   }
 
   async componentDidMount() {
-    //getIP.getIP();
+    try { 
+    //  localStorage.removeItem("cart");
+    //  localStorage.removeItem("A");
+      // //geting the IP
+      // const api = await axios.get(`https://api.ipify.org`);
+      // console.log(api.data);
+      // localStorage.setItem("IP", api.data);
 
-    //localStorage.removeItem("A");
-    //localStorage.removeItem("cart");
-    // let api = await axios.get(`https://api.ipify.org`);
-    // console.log(api.data);
-    // localStorage.setItem("IP", api.data);
+      // //getting location details and saved the currency type
+      // let Currency;
+      // const ipfindKey = "4bb7829c-0573-4555-963f-488c0c938aba";
+      // const IP = localStorage.getItem("IP");
+      // const LocationDetails = await axios.get(
+      //   `https://api.ipfind.com/?ip=${IP}&auth=${ipfindKey}`
+      // );
 
-    // let ipfindKey = "4bb7829c-0573-4555-963f-488c0c938aba";
-    // let IP = localStorage.getItem("IP");
-    // let LocationDetails = await axios.get(
-    //   `https://api.ipfind.com/?ip=${IP}&auth=${ipfindKey}`
-    // );
-    // localStorage.setItem("Currency", LocationDetails.data.currency);
-    // let Currency = LocationDetails.data.currency;
-    // console.log(LocationDetails.data.currency);
-    // console.log(LocationDetails);
+      // if (LocationDetails !== null) {
+      //   Currency = LocationDetails.data.currency;
+      //   localStorage.setItem("Currency", LocationDetails.data.currency);
+      //   console.log(LocationDetails.data.currency);
+      //   console.log(LocationDetails);
+      // }
 
-    // let fixerApiAccessKey = "d06e1099c3d4e07d044c77a892774bd8";
-    // let CurrencyData = await axios.get(
-    //   `https://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
-    // );
-    // CurrencyData = CurrencyData.data.rates;
+      // //getting currency details
+      // const fixerApiAccessKey = "d06e1099c3d4e07d044c77a892774bd8";
+      // let CurrencyData = await axios.get(
+      //   `https://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
+      // );
+      // CurrencyData = CurrencyData.data.rates;
 
-    // for (var i in CurrencyData) {
-    //   if (i === Currency) {
-    //     console.log(CurrencyData[i]);
-    //     localStorage.setItem("CurrencyRate", CurrencyData[i]);
-    //   }
-    // }
+      // //searching with already saved currency type and save the currency rate
+      // if (CurrencyData !== null) {
+      //   for (var i in CurrencyData) {
+      //     if (i === Currency) {
+      //       console.log(CurrencyData[i]);
+      //       localStorage.setItem("CurrencyRate", CurrencyData[i]);
+      //     }
+      //   }
+      // }
 
-    let { data } = await axios.get("http://localhost:5000/api/phones/");
-    this.setState({ phoneList: data });
+      let { data } = await axios.get("http://localhost:5000/api/phones/");
+      this.setState({ phoneList: data });
 
-    let newCount= 0;
-    let a = JSON.parse(localStorage.getItem("cart"));
-if(a !== null){
-    for(let i=0;i<a.length;i++){
-     if(a[i]){
-     console.log(a[i].count);  
-     newCount = newCount + a[i].count;
+      let newCount = 0;
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      if (cart !== null) {
+        for (let i = 0; i < cart.length; i++) {
+          if (cart[i]) {
+            console.log(cart[i].count);
+            newCount = newCount + cart[i].count;
+          }
+        }
+        console.log(newCount);
+        this.setState({ cartCount: newCount });
+      }
+    } catch (error) {
+      console.error(error);
     }
-    }
-    console.log(newCount);
-    this.setState({ cartCount: newCount });
-  }
   }
 }
 
