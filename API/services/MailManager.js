@@ -1,6 +1,8 @@
 const nodemailer = require("nodemailer");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 class MailManager {
   preparePDF(order, user) {
@@ -13,17 +15,15 @@ class MailManager {
         service: "gmail",
         auth: {
           type: "OAuth2",
-          user: "chanuka.nibm@gmail.com",
-          clientId:
-            "605393212525-ibq036hleemn84ahn5refs49ka0jpbbl.apps.googleusercontent.com",
-          clientSecret: "YcMHrJ43DNkvqZtQRAq5OmdF",
-          refreshToken:
-            "1//04536Dm_K8v6DCgYIARAAGAQSNwF-L9Ird7C8BxRtHsXPFcbQcGmEDXI79BEgVUq0wkeNWZoyjpmGeV4F6OVlwgWfnNXHiz5EAP8",
+          user: process.env.USER_EMAIL,
+          clientId: process.env.CLIENT_ID,
+          clientSecret: process.env.CLIENT_SECRET,
+          refreshToken: process.env.REFRESH_TOKEN,
         },
       });
 
       var mailOptions = {
-        from: "chanuka.nibm@gmail.com",
+        from: process.env.USER_EMAIL,
         to: recepient,
         subject: subject,
         text: messageBody,

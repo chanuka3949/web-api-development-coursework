@@ -6,6 +6,7 @@ import Zoom from "react-reveal/Zoom";
 import httpreq from "httpreq";
 import { withAuth0 } from "@auth0/auth0-react";
 import apiconfig from "../../api_config.json";
+import { toast } from "react-toastify";
 
 class Phone extends Component {
   state = {
@@ -30,9 +31,9 @@ class Phone extends Component {
   };
 
   addToCart() {
-    const { loginWithRedirect, isAuthenticated } = this.props.auth0;
+    const { isAuthenticated } = this.props.auth0;
     if (!isAuthenticated) {
-      loginWithRedirect();
+      toast.info("Please login to add items to cart");
     } else {
       this.props.onaddToCart();
     }

@@ -7,13 +7,16 @@ const router = express.Router();
 // get all phones details
 router.get("/", async (req, res) => {
   try {
-    let phones = await checkOutModel.find();
-    if (!phones) {
-      return res.status(404).send({ message: "No Phones Available" });
+    let order = await checkOutModel.find();
+    if (!order) {
+      throw createError(404, "No orders in the system");
     }
-    res.send(phones);
-  } catch (e) {
-    res.status(500).send({ message: e.message });
+    res.send(order);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
@@ -66,7 +69,15 @@ router.post("/", async (req, res) => {
   try {
     let user = await User.findOne({ uid: req.body.userId });
 
-    if (!user.address) {
+    if (
+      typeof user.address === "undefined" ||
+      typeof user.address.address1 === "undefined" ||
+      typeof user.address.address2 === "undefined" ||
+      typeof user.address.city === "undefined" ||
+      typeof user.address.country === "undefined" ||
+      typeof user.address.postalCode === "undefined" ||
+      typeof user.address.contactNumber === "undefined"
+    ) {
       return res.status(400).send({ message: "Please Save The Address" });
     }
 
@@ -89,14 +100,14 @@ router.post("/", async (req, res) => {
 
     newCartList.userId = userId;
     newCartList.total = total;
-let newCheckOut = new checkOutModel(newCartList);
+    let newCheckOut = new checkOutModel(newCartList);
 
-let order = await newCheckOut.save();
+    let order = await newCheckOut.save();
 
-  let manager = new MailManager();
-  manager.preparePDF(order, user);
+    let manager = new MailManager();
+    manager.preparePDF(order, user);
 
-  res.send(order);
+    res.send(order);
   } catch (e) {
     return res.status(500).send(e.message);
   }

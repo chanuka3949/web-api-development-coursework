@@ -73,14 +73,21 @@ class CartHome extends Component {
   }
 
   async chechkOut() {
-    console.log(this.state.cartList);
-    await axios.post(`http://localhost:5000/api/checkOut/`, {
+    axios.post(`http://localhost:5000/api/checkOut/`, {
       userId: localStorage.getItem("A"),
       cartList: this.state.cartList,
       total: 7
-    });
-    this.deletefromCart();
-    localStorage.removeItem("cart");
+    }).then(
+      (response) => {
+        toast.success("Checkout Successful");
+        this.deletefromCart();
+        localStorage.removeItem("cart");
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    )
+   
   }
 
   async deletefromCart() {
