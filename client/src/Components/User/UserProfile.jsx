@@ -98,6 +98,7 @@ class UserProfile extends Component {
           toast.info("User Details Updated");
         },
         (error) => {
+          this.getProfileData();
           toast.error(error.message);
         }
       );

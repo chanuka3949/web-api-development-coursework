@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Cartsearch extends Component {
   state = {};
@@ -6,7 +7,7 @@ class Cartsearch extends Component {
   render() {
     return (
       <div className="container">
-        <div className="text-center mt-5">
+        {/* <div className="text-center mt-5">
           <h1>Welcome to our Store</h1>
           <p>This is the Store Page.</p>
         </div>
@@ -19,12 +20,18 @@ class Cartsearch extends Component {
                 placeholder="Search product"
                 className="form-control"
               />
-              <button className="btn btn-primary">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  this.search();
+                }}
+              >
                 <img src="search.png" alt=""></img>
-              </button>
+              </button>{" "}
+              
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }

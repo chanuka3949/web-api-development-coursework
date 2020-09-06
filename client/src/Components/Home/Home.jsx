@@ -14,7 +14,14 @@ class Home extends Component {
     cartItems: [],
     cartCount: 0,
     insertOrUpdate: 0,
+    searchTerm: ""
   };
+
+  handleChange = (event) => {
+  this.setState({searchTerm: event.target.value});
+      console.log(this.state.searchTerm)
+      };
+
   render() {
     return (
       <React.Fragment>
@@ -26,9 +33,40 @@ class Home extends Component {
           <Slider />
         </div>
 
-        <div>
+        {/* <div>
           <CartSearch />
+        </div> */}
+
+<div className="container">
+        <div className="text-center mt-5">
+          <h1>Welcome to our Store</h1>
+          <p>This is the Store Page.</p>
         </div>
+
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="d-flex justify-content-center pb-3 search-button">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search product"
+                className="form-control"
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  this.getPhoneByName(this.state.searchTerm);
+                }}
+              >
+                <img src="search.png" alt=""></img>
+              </button>{" "}
+              
+            </div>
+          </div>
+        </div>
+      </div>
 
         <div
           className="card-deck"
@@ -149,6 +187,18 @@ class Home extends Component {
       }
     );
   }
+
+  getPhoneByName(name) {
+    axios.get(`http://localhost:5000/api/phones/${name}`).then(
+      (response) => {
+        this.setState({ phoneList: response.data });
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+  }
+
   async componentDidMount() {
     try {
       this.getPhoneList();

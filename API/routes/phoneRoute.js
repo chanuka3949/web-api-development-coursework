@@ -20,10 +20,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-// get phones details according to the givven id
-router.get("/:phoneId", async (req, res, next) => {
+
+//get phones details according to the givven id
+router.get("/:name", async (req, res, next) => {
   try {
-    let phoneData = await phoneModel.findById(req.params.phoneId);
+   // let phoneData = await phoneModel.findById(req.params.phoneId);
+   let phoneData = await phoneModel.find({ name: req.params.name,});
     if (!phoneData) {
       throw createError(404, "The givven id is not in ouer server");
     }
@@ -34,9 +36,10 @@ router.get("/:phoneId", async (req, res, next) => {
       next(createError(400, "invalid id"));
       return;
     }
-    next(error);
+    next(error); //error coming in the catch block
   }
 });
+
 
 //create records
 router.post("/", async (req, res, next) => {
@@ -48,9 +51,9 @@ router.post("/", async (req, res, next) => {
       imgUrl: req.body.imgUrl,
       stockCount: req.body.stockCount,
     });
-    if (!req.body) {
-      throw createError(404, "not given values"); //validations
-    }
+    // if (!req.body) {
+    //   throw createError(404, "not given values"); //validations
+    // }
     let phoneDataToBeAdded = await phoneDataToBeAddedDb.save();
     res.send(phoneDataToBeAdded);
   } catch (error) {

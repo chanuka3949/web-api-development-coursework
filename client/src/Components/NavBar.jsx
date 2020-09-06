@@ -11,8 +11,6 @@ class NavBar extends Component {
       <div className="container">
         <nav className="header_header__3p7LH">
           <Link to="/">Store</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/contact-us"> Contact Us</Link>
           <Link
             hidden={!isAuthenticated}
             to={isAuthenticated ? `/users/${user.sub.split("|", 2)[1]}` : ``}
@@ -20,10 +18,10 @@ class NavBar extends Component {
             User Profile
           </Link>
           <Auth />
-          <Link to="/cart">
+          <Link to="/cart" className="nawbarcart">
             {" "}
             <img
-              src="cart-icon.png"
+              src="../cart-icon.png"
               style={{ width: 20, marginRight: 6 }}
               alt="cart-icon"
             ></img>
