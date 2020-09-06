@@ -6,7 +6,7 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./Components/Footer";
-import Auth0ProviderWithHistory from "./Components/Auth0Provider";
+import Auth0ProviderWithHistory from "./Components/Authentication/Auth0Provider";
 
 
 

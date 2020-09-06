@@ -4,11 +4,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "./Components/Loading";
 import NavBar from "./Components/NavBar";
 import { Route } from "react-router-dom";
-import Home from "./Components/Home";
-import CartHome from "./Components/CartHome";
-import UserProfile from "./Components/UserProfile";
+import Home from "./Components/Home/Home";
+import CartHome from "./Components/Cart/CartHome";
+import UserProfile from "./Components/User/UserProfile";
 import { ToastContainer } from "react-toastify";
-import Profile from "./Components/Profile";
+import Profile from "./Components/User/Profile";
 
 function App() {
   const { isLoading } = useAuth0();

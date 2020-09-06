@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Fade from "react-reveal/Fade";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 class Cart extends Component {
   state = {};

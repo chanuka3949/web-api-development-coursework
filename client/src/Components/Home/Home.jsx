@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import StoreItem from "./StoreItem";
+import StoreItem from "./Phone";
 import axios from "axios";
-import CartSearch from "./CartSearch";
-import NavBar from "./NavBar";
-import Slider from "./Slider";
+import CartSearch from "../Cart/CartSearch";
+import NavBar from "../NavBar";
+import Slider from "../Slider";
 import { withAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
+import apiconfig from "../../api_config.json";
 
 class Home extends Component {
   state = {
@@ -153,10 +154,10 @@ class Home extends Component {
 
       // //getting location details and saved the currency type
       // let Currency;
-      // const ipfindKey = "4bb7829c-0573-4555-963f-488c0c938aba";
+     
       // const IP = localStorage.getItem("IP");
       // const LocationDetails = await axios.get(
-      //   `https://api.ipfind.com/?ip=${IP}&auth=${ipfindKey}`
+       //  `https://api.ipfind.com/?ip=${IP}&auth=${apiconfig.ipfindKey}`
       // );
 
       // if (LocationDetails !== null) {
@@ -167,9 +168,9 @@ class Home extends Component {
       // }
 
       // //getting currency details
-      // const fixerApiAccessKey = "d06e1099c3d4e07d044c77a892774bd8";
+
       // let CurrencyData = await axios.get(
-      //   `https://data.fixer.io/api/latest?access_key=${fixerApiAccessKey}`
+      //   `https://data.fixer.io/api/latest?access_key=${apiconfig.fixerAccessKey}`
       // );
       // CurrencyData = CurrencyData.data.rates;
 

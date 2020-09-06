@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import CartSearch from "./CartSearch";
 import Cart from "./Cart";
-import NavBar from "./NavBar";
+import NavBar from "../NavBar";
 import Checkout from "./Checkout";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import ShippingDetails from "./ShippingDetails";
 import { toast } from "react-toastify";
@@ -138,13 +138,7 @@ class CartHome extends Component {
         userId: localStorage.getItem("A"),
         itemId: item._id,
       });
-    } catch (e) {
-      if (e.response && e.response.data) {
-        alert(e.response.data.message + e.response.status);
-      //  alert(e.response.status);
-      }
-    }
-
+      
     let cartList = [...this.state.cartList];
     let index = cartList.indexOf(item);
     cartList[index] = { ...item };
@@ -161,6 +155,13 @@ class CartHome extends Component {
      a[i].itemcount = a[i].count--;
      localStorage.setItem("cart", JSON.stringify(a));
      }}
+    } catch (e) {
+      if (e.response && e.response.data) {
+        alert(e.response.data.message + e.response.status);
+      //  alert(e.response.status);
+      }
+    }
+
   }
 
  
