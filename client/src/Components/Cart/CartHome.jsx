@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import CartSearch from "./CartSearch";
 import Cart from "./Cart";
 import NavBar from "../NavBar";
 import Checkout from "./Checkout";
@@ -35,9 +34,7 @@ class CartHome extends Component {
         <div>
           <NavBar cartCount={this.state.cartCount} />
         </div>
-        <div>
-          <CartSearch />
-        </div>
+        
         <div className="container">
           <div className="row no-gutters">
             <div className="col-sm-8" style={{ marginTop: 100 }}>
@@ -165,31 +162,32 @@ class CartHome extends Component {
     } catch (e) {
       if (e.response && e.response.data) {
         alert(e.response.data.message + e.response.status);
-      //  alert(e.response.status);
+        //  alert(e.response.status);
       }
     }
 
   }
 
- 
   async deleteCartItem(itemtodeleteid) {
     let newCart = this.state.cartList.filter(
       (item) => item.itemId !== itemtodeleteid
     );
-    try{
-    await axios.delete(`http://localhost:5000/api/cart/${itemtodeleteid}`, {
-      userId: localStorage.getItem("A"),
-    }).then(
-      (response) => {
-        toast.info("Removed");
-      },
-      (error) => {
-        toast.error(error);
-      }
-    );
-  } catch (e) {
-    toast.error(e);
-  }
+    try {
+      await axios
+        .delete(`http://localhost:5000/api/cart/${itemtodeleteid}`, {
+          userId: localStorage.getItem("A"),
+        })
+        .then(
+          (response) => {
+            toast.info("Removed");
+          },
+          (error) => {
+            toast.error(error);
+          }
+        );
+    } catch (e) {
+      toast.error(e);
+    }
     this.setState({ cartList: newCart });
     this.calculateTotalAmount();
 
