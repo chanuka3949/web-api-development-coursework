@@ -131,7 +131,7 @@ class Home extends Component {
       try {
         await axios
           .post(`http://localhost:5000/api/cart/`, {
-            userId: localStorage.getItem("A"),
+            userId: localStorage.getItem("userID"),
             itemId: phone._id,
             itemName: phone.name,
             itembrand: phone.brand,
@@ -160,7 +160,7 @@ class Home extends Component {
         await axios
           .put(`http://localhost:5000/api/cart/${phone._id}`, {
             itemCount: count,
-            userId: localStorage.getItem("A"),
+            userId: localStorage.getItem("userID"),
             itemId: phone._id,
           })
           .then(
@@ -202,9 +202,10 @@ class Home extends Component {
   async componentDidMount() {
     try {
       this.getPhoneList();
-      //  localStorage.removeItem("cart");
-      //  localStorage.removeItem("A");
-      // //geting the IP
+
+      //localStorage.removeItem("cart");
+
+      //geting the IP
       // const api = await axios.get(`https://api.ipify.org`);
       // console.log(api.data);
       // localStorage.setItem("IP", api.data);
@@ -230,7 +231,6 @@ class Home extends Component {
       //   `https://data.fixer.io/api/latest?access_key=${apiconfig.fixerAccessKey}`
       // );
       // CurrencyData = CurrencyData.data.rates;
-
       // //searching with already saved currency type and save the currency rate
       // if (CurrencyData !== null) {
       //   for (var i in CurrencyData) {

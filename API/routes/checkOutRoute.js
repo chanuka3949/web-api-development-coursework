@@ -65,8 +65,19 @@ router.get("/:phoneId", async (req, res) => {
 //       res.send(a);
 //     });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
+
+    console.log(req.body.total)
+    if (!req.body.total) {
+      throw createError(400, "Pleae log!");
+    }
+
+    console.log(req.body.cartList)
+    if (!req.body.cartList) {
+      throw createError(400, "Please Add Items to Cart");
+    }
+
     let user = await User.findOne({ uid: req.body.userId });
 
     if (
@@ -78,17 +89,13 @@ router.post("/", async (req, res) => {
       typeof user.address.postalCode === "undefined" ||
       typeof user.address.contactNumber === "undefined"
     ) {
-      return res.status(400).send({ message: "Please Save The Address" });
-    }
-
-    if (!req.body.cartList) {
-      return res.status(400).send({ message: "Please Add Items to Cart" });
+      throw createError(400, "Please Save Shipping Details Correctly");
     }
 
     let cartList = req.body.cartList;
     let userId = req.body.userId;
     let total = req.body.total;
-    var newCartList = {
+    let newCartList = {
       userId: "",
       items: [],
       total: 0,
@@ -108,8 +115,11 @@ router.post("/", async (req, res) => {
     manager.preparePDF(order, user);
 
     res.send(order);
-  } catch (e) {
-    return res.status(500).send(e.message);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
