@@ -32,12 +32,11 @@ router.get("/:userId", async (req, res) => {
 });
 
 //adding to shopping cart
-router.post("/", async (req, res) => {
-
-  if (!req.body.userId) {
-    return res.status(400).send("Not all madatary values have benn set !");
-  }
+router.post("/", async (req, res, next) => {
   try {
+    if (!req.body.userId) {
+      throw createError(400, "Pleae log!");
+    }
     let cartDataToBeAddedDb = new shoppingCartModel({
       userId: req.body.userId,
       itemId: req.body.itemId,
@@ -50,8 +49,11 @@ router.post("/", async (req, res) => {
 
     let cartDataToBeAdded = await cartDataToBeAddedDb.save();
     res.send(cartDataToBeAdded);
-  } catch (e) {
-    return res.status(500).send(e.message);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
@@ -82,13 +84,13 @@ router.put("/:phoneId", async (req, res) => {
   }
   // if (req.body.itemCount > 5)  {
   //   return res.status(400).json({ message: "Not in stock" });
-  // } 
+  // }
   let cartEdit = await shoppingCartModel.findOneAndUpdate(
     { itemId: req.params.phoneId, userId: userId },
     { $set: { itemCount: req.body.itemCount } },
     { new: true, useFindAndModify: false }
   );
-  
+
   res.send(cartEdit);
 });
 
@@ -106,7 +108,7 @@ router.put("/:phoneId", async (req, res) => {
 // });
 
 //delete cart details
-router.delete("/:itemId", async (req, res) => {
+router.delete("/:itemId", async (req, res, next) => {
   let item = await shoppingCartModel.find({ itemId: req.params.itemId });
   console.log(item);
   let phoneId = await shoppingCartModel.findOneAndDelete({
@@ -116,19 +118,27 @@ router.delete("/:itemId", async (req, res) => {
   res.send(phoneId);
 });
 
-router.delete("/deletecart/:userId", async (req, res) => {
-  let items = await shoppingCartModel.find({ userId: req.params.userId });
-  console.log(items.length);
-  let phoneId = "";
-  for (i = 0; i < items.length; i++) {
-    phoneId = await shoppingCartModel.findOneAndDelete({
-      itemId: items[i].itemId,
-      userId: req.params.userId,
-    });
+router.delete("/deletecart/:userId", async (req, res, next) => {
+  try {
+    let items = await shoppingCartModel.find({ userId: req.params.userId });
+   
+    let phoneId = "";
+    for (i = 0; i < items.length; i++) {
+      phoneId = await shoppingCartModel.findOneAndDelete({
+        itemId: items[i].itemId,
+        userId: req.params.userId,
+      });
+    }
+    res.send(phoneId);
+  } catch (error) {
+    //console.log(error.message);
+    if (error.name === "ValidationError") {
+      next(createError(422, error.message));
+      return;
+    }
+    next(error);
   }
-  res.send(phoneId);
 });
-
 // ProductModel.findOneAndDelete({ brand: 'Nike' }, function (err) {
 //   if(err) console.log(err);
 //   console.log("Successful deletion");

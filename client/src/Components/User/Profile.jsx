@@ -37,7 +37,7 @@ const Profile = () => {
   useEffect(() => {
     if (isAuthenticated) {
       let uid = sub.split("|", 2)[1];
-      localStorage.setItem("A", uid)
+      localStorage.setItem("userID", uid)
       addUserIfNotExist();
     }
   });

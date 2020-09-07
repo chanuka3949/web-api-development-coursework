@@ -44,6 +44,10 @@ router.get("/:name", async (req, res, next) => {
 //create records
 router.post("/", async (req, res, next) => {
   try {
+    if (!req.body) {
+      throw createError(404, "not given values"); //validations
+    }
+    
     let phoneDataToBeAddedDb = new phoneModel({
       name: req.body.name,
       brand: req.body.brand,
@@ -51,9 +55,7 @@ router.post("/", async (req, res, next) => {
       imgUrl: req.body.imgUrl,
       stockCount: req.body.stockCount,
     });
-    // if (!req.body) {
-    //   throw createError(404, "not given values"); //validations
-    // }
+    
     let phoneDataToBeAdded = await phoneDataToBeAddedDb.save();
     res.send(phoneDataToBeAdded);
   } catch (error) {

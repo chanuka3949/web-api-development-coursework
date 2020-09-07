@@ -16,6 +16,15 @@ const checkOutSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    date:{
+        type: Date,
+        default: new Date()
+    },
+    timeZone:{
+        type: Number,
+        default: new Date().getTimezoneOffset()
+    }
 });
 
 const checkOutModel = mongoose.model("checkOutModel", checkOutSchema);
