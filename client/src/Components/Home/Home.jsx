@@ -18,10 +18,13 @@ class Home extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ searchTerm: event.target.value });
+    let nam = event.target.name;
+    let val = event.target.value;
+    this.setState({ [nam]: val });
   };
 
   clearsearch = () => {
+    console.log("tt");
     this.setState({
      
       searchTerm: "",
@@ -56,10 +59,10 @@ class Home extends Component {
               <div className="d-flex justify-content-center pb-3 search-button">
                 <input
                  type="text"
-                  name="search"
+                  name="searchTerm"
                   placeholder="Search product"
                   className="form-control"
-                  value={this.state.value}
+                  value={this.state.searchTerm}
                   onChange={this.handleChange}
                 />
                 <button
