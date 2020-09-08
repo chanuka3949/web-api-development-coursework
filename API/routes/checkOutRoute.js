@@ -2,6 +2,8 @@ const express = require("express");
 const checkOutModel = require("../models/checkOutModel");
 const User = require("../models/userModel");
 const MailManager = require("../services/MailManager");
+const createError = require("http-errors");
+const mongoose = require("mongoose");
 const router = express.Router();
 
 // get all phones details
@@ -65,7 +67,7 @@ router.get("/:phoneId", async (req, res) => {
 //       res.send(a);
 //     });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     let user = await User.findOne({ uid: req.body.userId });
 
@@ -78,12 +80,14 @@ router.post("/", async (req, res) => {
       typeof user.address.postalCode === "undefined" ||
       typeof user.address.contactNumber === "undefined"
     ) {
-      return res.status(400).send({ message: "Please Save The Address" });
+      throw createError(400, "Please Save The Address"); //validations
     }
 
+    console.log(req.body.cartList)
     if (!req.body.cartList) {
-      return res.status(400).send({ message: "Please Add Items to Cart" });
+      throw createError(404, "not given values"); //validations
     }
+    
 
     let cartList = req.body.cartList;
     let userId = req.body.userId;
@@ -108,10 +112,16 @@ router.post("/", async (req, res) => {
     manager.preparePDF(order, user);
 
     res.send(order);
-  } catch (e) {
-    return res.status(500).send(e.message);
+    
+  } catch (error) {
+    if (error.name=== 'Validation Error') {
+      next(createError(422, error.message));
+      return;
+    }
+    next(error);
   }
 });
+
 
 //Edit phone details
 router.put("/:phoneId", async (req, res) => {

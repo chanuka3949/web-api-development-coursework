@@ -18,7 +18,7 @@ class NavBar extends Component {
             User Profile
           </Link>
           <Auth />
-          <Link to="/cart" className="nawbarcart">
+          <Link to="/cart" className="cart">
             {" "}
             <img
               src="../cart-icon.png"

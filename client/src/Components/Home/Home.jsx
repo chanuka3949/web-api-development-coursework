@@ -14,13 +14,12 @@ class Home extends Component {
     cartItems: [],
     cartCount: 0,
     insertOrUpdate: 0,
-    searchTerm: ""
+    searchTerm: "",
   };
 
   handleChange = (event) => {
-  this.setState({searchTerm: event.target.value});
-      console.log(this.state.searchTerm)
-      };
+    this.setState({ searchTerm: event.target.value });
+  };
 
   render() {
     return (
@@ -37,36 +36,35 @@ class Home extends Component {
           <CartSearch />
         </div> */}
 
-<div className="container">
-        <div className="text-center mt-5">
-          <h1>Welcome to our Store</h1>
-          <p>This is the Store Page.</p>
-        </div>
+        <div className="container">
+          <div className="text-center mt-5">
+            <h1>Welcome to our Store</h1>
+            <p>This is the Store Page.</p>
+          </div>
 
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="d-flex justify-content-center pb-3 search-button">
-            <input
-                type="text"
-                name="search"
-                placeholder="Search product"
-                className="form-control"
-                value={this.state.value}
-                onChange={this.handleChange}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  this.getPhoneByName(this.state.searchTerm);
-                }}
-              >
-                <img src="search.png" alt=""></img>
-              </button>{" "}
-              
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="d-flex justify-content-center pb-3 search-button">
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Search product"
+                  className="form-control"
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    this.getPhoneByName(this.state.searchTerm);
+                  }}
+                >
+                  <img src="search.png" alt=""></img>
+                </button>{" "}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
         <div
           className="card-deck"
@@ -204,7 +202,7 @@ class Home extends Component {
       this.getPhoneList();
       //  localStorage.removeItem("cart");
       //  localStorage.removeItem("A");
-      // //geting the IP
+      //geting the IP
       // const api = await axios.get(`https://api.ipify.org`);
       // console.log(api.data);
       // localStorage.setItem("IP", api.data);

@@ -108,8 +108,8 @@ class UserProfile extends Component {
     const { country } = this.state;
     return (
       <React.Fragment>
-        <div>
-          <NavBar />
+        <div className="nawbar-cart">
+        <NavBar/>
         </div>
         <div className="card-deck">
           <div

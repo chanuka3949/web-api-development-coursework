@@ -76,7 +76,11 @@ class CartHome extends Component {
       total: 7
     }).then(
       (response) => {
-        toast.success("Checkout Successful");
+        // toast.success("Checkout Successful");
+        console.log(response.status);
+              if (response.status === 200) {
+                toast.info("succesfull");
+              }
         this.deletefromCart();
         localStorage.removeItem("cart");
       },
@@ -118,7 +122,6 @@ class CartHome extends Component {
     let index = cartList.indexOf(item);
     cartList[index] = { ...item };
     cartList[index].itemCount++;
-    // cartList[index].itemprice++ ;
     this.setState({ cartList: cartList });
     this.calculateTotalAmount();
 
@@ -154,7 +157,6 @@ class CartHome extends Component {
     for(let i=0;i<a.length;i++){
       console.log(item.itemId);
      if(a[i]._id === item.itemId){
-      console.log("hjkhjkgjkgjkgjkgkgjk");
      console.log(a[i].count);
      a[i].itemcount = a[i].count--;
      localStorage.setItem("cart", JSON.stringify(a));
