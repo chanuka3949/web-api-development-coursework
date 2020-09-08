@@ -70,7 +70,7 @@ class Phone extends Component {
               <h6 className="card-title">{this.props.phone.name}</h6>
               <h6 className="card-text">
                 {localStorage.getItem("Currency")}
-                {""} {this.state.phonePrice}
+                {""} {this.props.phone.price * parseFloat( localStorage.getItem("CurrencyRate"))}
               </h6>
               <button
                 className="btn btn-outline-success float-left"

@@ -14,13 +14,13 @@ class Home extends Component {
     cartItems: [],
     cartCount: 0,
     insertOrUpdate: 0,
-    searchTerm: ""
+    searchTerm: "",
   };
 
   handleChange = (event) => {
-  this.setState({searchTerm: event.target.value});
-      console.log(this.state.searchTerm)
-      };
+    this.setState({ searchTerm: event.target.value });
+    console.log(this.state.searchTerm);
+  };
 
   render() {
     return (
@@ -37,36 +37,35 @@ class Home extends Component {
           <CartSearch />
         </div> */}
 
-<div className="container">
-        <div className="text-center mt-5">
-          <h1>Welcome to our Store</h1>
-          <p>This is the Store Page.</p>
-        </div>
+        <div className="container">
+          <div className="text-center mt-5">
+            <h1>Welcome to our Store</h1>
+            <p>This is the Store Page.</p>
+          </div>
 
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="d-flex justify-content-center pb-3 search-button">
-            <input
-                type="text"
-                name="search"
-                placeholder="Search product"
-                className="form-control"
-                value={this.state.value}
-                onChange={this.handleChange}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  this.getPhoneByName(this.state.searchTerm);
-                }}
-              >
-                <img src="search.png" alt=""></img>
-              </button>{" "}
-              
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="d-flex justify-content-center pb-3 search-button">
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Search product"
+                  className="form-control"
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    this.getPhoneByName(this.state.searchTerm);
+                  }}
+                >
+                  <img src="search.png" alt=""></img>
+                </button>{" "}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
         <div
           className="card-deck"
@@ -104,7 +103,7 @@ class Home extends Component {
     let count = 0;
     cartItems = JSON.parse(localStorage.getItem("cart"));
     cartItems.forEach((item) => {
-      if (item._id === phone._id) {
+      if ((item.itemId === phone._id) | (item._id === phone._id)) {
         item.count++;
         count = item.count;
         alreadyInCart = true;
@@ -134,20 +133,26 @@ class Home extends Component {
             userId: localStorage.getItem("userID"),
             itemId: phone._id,
             itemName: phone.name,
-            itembrand: phone.brand,
-            itemprice: phone.price,
-            itemimgUrl: phone.imgUrl,
+            itemBrand: phone.brand,
+            itemPrice: phone.price,
+            itemImgUrl: phone.imgUrl,
             itemCount: 1,
           })
           .then(
             (response) => {
-              console.log(response.status);
-              if (response.status === 200) {
-                toast.info("Added to cart");
-              }
+              toast.info("Added to cart");
             },
             (error) => {
-              toast.error(error);
+              toast.warning(error.response.data.message);
+              cartItems = JSON.parse(localStorage.getItem("cart"));
+              cartItems.forEach((item) => {
+                if ((item.itemId === phone._id) | (item._id === phone._id)) {
+                  item.count--;
+                  count = item.count;
+                }
+              });              
+              this.setState({ cartCount: this.state.cartCount - 1 });
+              localStorage.setItem("cart", JSON.stringify(cartItems));
             }
           );
       } catch (e) {
@@ -170,6 +175,17 @@ class Home extends Component {
             },
             (error) => {
               toast.error(error);
+              toast.warning(error.response.data.message);
+              cartItems = JSON.parse(localStorage.getItem("cart"));
+              cartItems.forEach((item) => {
+                if ((item.itemId === phone._id) | (item._id === phone._id)) {
+                  item.count--;
+                  count = item.count;
+                  alreadyInCart = true;
+                  update = true;
+                  this.setState({ cartCount: this.state.cartCount - 1 });
+                }
+              });
             }
           );
       } catch (e) {
@@ -177,6 +193,7 @@ class Home extends Component {
       }
     }
   }
+
   getPhoneList() {
     axios.get("http://localhost:5000/api/phones/").then(
       (response) => {
@@ -199,48 +216,97 @@ class Home extends Component {
     );
   }
 
+  async loadToCart() {
+    try {
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
   async componentDidMount() {
     try {
-      this.getPhoneList();
-
       //localStorage.removeItem("cart");
 
-      //geting the IP
-      // const api = await axios.get(`https://api.ipify.org`);
-      // console.log(api.data);
-      // localStorage.setItem("IP", api.data);
+      //  localStorage.clear()
 
-      // //getting location details and saved the currency type
-      // let Currency;
+      const { isAuthenticated } = this.props.auth0;
 
-      // const IP = localStorage.getItem("IP");
-      // const LocationDetails = await axios.get(
-      //  `https://api.ipfind.com/?ip=${IP}&auth=${apiconfig.ipfindKey}`
-      // );
+      let login = localStorage.getItem("login");
+      let loadApi = localStorage.getItem("loadApi");
 
-      // if (LocationDetails !== null) {
-      //   Currency = LocationDetails.data.currency;
-      //   localStorage.setItem("Currency", LocationDetails.data.currency);
-      //   console.log(LocationDetails.data.currency);
-      //   console.log(LocationDetails);
-      // }
+      if (loadApi === null) {
+        // geting the IP
+        const api = await axios.get(`https://api.ipify.org`);
+        console.log(api.data);
+        localStorage.setItem("IP", api.data);
 
-      // //getting currency details
+        //getting location details and saved the currency type
+        const IP = localStorage.getItem("IP");
+        let LocationDetails = await axios.get(
+          `https://api.ipfind.com/?ip=${IP}&auth=${apiconfig.ipfindKey}`
+        );
 
-      // let CurrencyData = await axios.get(
-      //   `https://data.fixer.io/api/latest?access_key=${apiconfig.fixerAccessKey}`
-      // );
-      // CurrencyData = CurrencyData.data.rates;
-      // //searching with already saved currency type and save the currency rate
-      // if (CurrencyData !== null) {
-      //   for (var i in CurrencyData) {
-      //     if (i === Currency) {
-      //       console.log(CurrencyData[i]);
-      //       localStorage.setItem("CurrencyRate", CurrencyData[i]);
-      //     }
-      //   }
-      // }
+        if (LocationDetails !== null) {
+          console.log(LocationDetails);
+          localStorage.setItem("Currency", LocationDetails.data.currency);
+          console.log(LocationDetails.data.currency);
+        }
 
+        localStorage.setItem("loadApi", "true");
+      }
+      //getting currency details
+      const CurrencyData = await axios.get(
+        `http://data.fixer.io/api/latest?access_key=${apiconfig.fixerAccessKey}`
+      );
+      const CurrencyDataRate = CurrencyData.data.rates;
+
+      //searching with already saved currency type and save the currency rate
+      if (CurrencyDataRate !== null) {
+        for (var i in CurrencyDataRate) {
+          if (i === localStorage.getItem("Currency")) {
+            console.log(CurrencyDataRate[i]);
+            localStorage.setItem("CurrencyRate", CurrencyDataRate[i]);
+          }
+        }
+      }
+
+      if (login === null) {
+        if (isAuthenticated) {
+          localStorage.setItem("login", "true");
+
+          let cartListArray = [];
+          let newCartList = {
+            _id: "",
+            userId: "",
+            itemId: "",
+            itemName: "",
+            itemBrand: "",
+            itemPrice: "",
+            itemImgUrl: "",
+            itemCount: 0,
+          };
+
+          let { data } = await axios.get(
+            `http://localhost:5000/api/cart/${localStorage.getItem("userID")}`
+          );
+          console.log(data);
+          for (let i = 0; i < data.length; i++) {
+            newCartList = new Object();
+            newCartList._id = data[i]._id;
+            newCartList.userId = data[i].userId;
+            newCartList.itemId = data[i].itemId;
+            newCartList.itemName = data[i].itemName;
+            newCartList.itemBrand = data[i].itemBrand;
+            newCartList.itemPrice = data[i].itemPrice;
+            newCartList.itemImgUrl = data[i].itemImgUrl;
+            newCartList.count = data[i].itemCount;
+            cartListArray[i] = newCartList;
+          }
+
+          console.log(cartListArray);
+          localStorage.setItem("cart", JSON.stringify(cartListArray));
+        }
+      }
       let newCount = 0;
       let cart = JSON.parse(localStorage.getItem("cart"));
       if (cart !== null) {
@@ -253,6 +319,8 @@ class Home extends Component {
         console.log(newCount);
         this.setState({ cartCount: newCount });
       }
+
+      this.getPhoneList();
     } catch (error) {
       console.error(error);
     }

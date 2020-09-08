@@ -17,17 +17,17 @@ const shoppingCartSchema = new mongoose.Schema({
         required: true
     },
     
-    itembrand : {
+    itemBrand : {
         type: String,
         required: true
     },
 
-    itemprice : {
+    itemPrice : {
         type: Number,       
         required: true
     },
 
-    itemimgUrl:{
+    itemImgUrl:{
         type: String,
        
     },
