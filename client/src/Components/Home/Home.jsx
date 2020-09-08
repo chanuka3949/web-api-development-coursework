@@ -21,6 +21,15 @@ class Home extends Component {
     this.setState({ searchTerm: event.target.value });
   };
 
+  clearsearch = () => {
+    this.setState({
+     
+      searchTerm: "",
+     
+      
+    });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -46,7 +55,7 @@ class Home extends Component {
             <div className="col-sm-12">
               <div className="d-flex justify-content-center pb-3 search-button">
                 <input
-                  type="text"
+                 type="text"
                   name="search"
                   placeholder="Search product"
                   className="form-control"
@@ -61,6 +70,18 @@ class Home extends Component {
                 >
                   <img src="search.png" alt=""></img>
                 </button>{" "}
+
+                <button
+                  className="btn btn-primary ml-3"
+                  onClick={() => {
+                    this.getPhoneList();
+                    this.clearsearch();
+                  }}
+                 // onClick={this.clearsearch}
+                >
+                  Reset
+                </button>{" "}
+
               </div>
             </div>
           </div>
