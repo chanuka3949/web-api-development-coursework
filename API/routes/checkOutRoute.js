@@ -31,7 +31,6 @@ router.get("/:phoneId", async (req, res) => {
   res.send(phoneData);
 });
 
-
 router.post("/", async (req, res, next) => {
   try {
     if (!req.body.userId) {
@@ -73,10 +72,7 @@ router.post("/", async (req, res, next) => {
     let newCheckOut = new checkOutModel(newCartList);
 
     let order = await newCheckOut.save();
-
-    let manager = new MailManager();
-    manager.preparePDF(order, user);
-
+    
     res.send(order);
   } catch (error) {
     if (error.name === "ValidationError") {

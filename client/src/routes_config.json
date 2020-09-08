@@ -1,0 +1,6 @@
+{
+    "users": "dev-gywguypr.us.auth0.com",
+    "cart": "http://localhost:5000/api/cart",
+    "checkOut": "http://localhost:5000/api/checkOut",
+    "phones": "http://localhost:5000/api/phones/"
+  }

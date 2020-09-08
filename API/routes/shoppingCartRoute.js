@@ -36,7 +36,7 @@ router.get("/:userId", async (req, res) => {
 router.post("/", async (req, res, next) => {
   try {
     if (!req.body.userId) {
-      throw createError(400, "Pleae log!");
+      throw createError(400, "Please Sign In");
     }
     let cartDataToBeAddedDb = new shoppingCartModel({
       userId: req.body.userId,

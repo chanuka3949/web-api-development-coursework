@@ -7,6 +7,7 @@ import Loading from "../Loading";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import ShippingDetails from "./ShippingDetails";
 import { toast } from "react-toastify";
+import routesconfig from "../../routes_config.json";
 
 class CartHome extends Component {
   state = {
@@ -56,7 +57,7 @@ class CartHome extends Component {
                   this.chechkOut();
                 }}
                 clear={() => {
-                  this.deletefromCart(localStorage.getItem("userID"));
+                  this.deleteFromCart();
                 }}
                 quantity={this.state.cartQuantity}
                 total={this.state.cartTotal}
@@ -72,7 +73,7 @@ class CartHome extends Component {
   async chechkOut() {
     try {
       axios
-        .post(`http://localhost:5000/api/checkOut/`, {
+        .post(`${routesconfig.checkOut}/`, {
           userId: localStorage.getItem("userID"),
           cartList: this.state.cartList,
           total: this.state.cartTotal,
@@ -80,7 +81,7 @@ class CartHome extends Component {
         .then(
           (response) => {
             toast.success("Order Successfull");
-            this.deletefromCart();
+            this.deleteFromCart();
             localStorage.setItem("chckoutSuccessMsg", "chckoutSuccessMsg");
             localStorage.removeItem("cart");
           },
@@ -93,7 +94,7 @@ class CartHome extends Component {
     }
   }
 
-  async deletefromCart() {
+  async deleteFromCart() {
     try {
       await axios
         .delete(

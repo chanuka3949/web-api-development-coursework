@@ -7,6 +7,7 @@ import Slider from "../Slider";
 import { withAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
 import apiconfig from "../../api_config.json";
+import routesconfig from "../../routes_config.json";
 
 class Home extends Component {
   state = {
@@ -95,9 +96,6 @@ class Home extends Component {
     let cartItems;
     if (a === null) {
       localStorage.setItem("cart", JSON.stringify(this.state.cartItems));
-      console.log("insideeeeeeeeee");
-    } else {
-      console.log("ihi");
     }
     let alreadyInCart = false;
     let count = 0;
@@ -129,7 +127,7 @@ class Home extends Component {
     if (update === false) {
       try {
         await axios
-          .post(`http://localhost:5000/api/cart/`, {
+          .post(`${routesconfig.cart}/`, {
             userId: localStorage.getItem("userID"),
             itemId: phone._id,
             itemName: phone.name,
@@ -150,7 +148,7 @@ class Home extends Component {
                   item.count--;
                   count = item.count;
                 }
-              });              
+              });
               this.setState({ cartCount: this.state.cartCount - 1 });
               localStorage.setItem("cart", JSON.stringify(cartItems));
             }
@@ -204,9 +202,9 @@ class Home extends Component {
       }
     );
   }
-
+//`http://localhost:5000/api/phones/${name}`
   getPhoneByName(name) {
-    axios.get(`http://localhost:5000/api/phones/${name}`).then(
+    axios.get(`${routesconfig.phones}/${name}`).then(
       (response) => {
         this.setState({ phoneList: response.data });
       },
@@ -225,10 +223,6 @@ class Home extends Component {
 
   async componentDidMount() {
     try {
-      //localStorage.removeItem("cart");
-
-      //  localStorage.clear()
-
       const { isAuthenticated } = this.props.auth0;
 
       let login = localStorage.getItem("login");
