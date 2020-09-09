@@ -23,13 +23,21 @@ router.get("/", async (req, res, next) => {
 });
 
 // get phones details according to the givven id
-router.get("/:phoneId", async (req, res) => {
-  let phoneData = await checkOutModel.findById(req.params.phoneId);
+router.get("/:phoneId", async (req, res, next) => {
+  try {
+    let phoneData = await checkOutModel.findById(req.params.phoneId);
 
-  if (!phoneData) {
-    res.status(404).send("the givven id dose not in our server");
+    if (!phoneData) {
+      throw createError(404, "The givven id dose not in our server");
+    }
+    res.send(phoneData);
+  } catch (error) {
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, "invalid id"));
+      return;
+    }
+    next(error);
   }
-  res.send(phoneData);
 });
 
 router.post("/", async (req, res, next) => {
@@ -54,7 +62,6 @@ router.post("/", async (req, res, next) => {
     ) {
       throw createError(400, "Please Save Shipping Details Correctly");
     }
-    
 
     let cartList = req.body.cartList;
     let userId = req.body.userId;
@@ -87,25 +94,29 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-
 //Edit phone details
-router.put("/:phoneId", async (req, res) => {
-  let phone = await checkOutModel.findById(req.params.phoneId);
+router.put("/:phoneId", async (req, res, next) => {
+  try {
+    let phone = await checkOutModel.findById(req.params.phoneId);
 
-  if (!phone) {
-    return res.status(404).send("the givven id dose not in our server");
-  }
-  if (!req.body.name) {
-    return res.status(400).send("Not all madatary values have been set !"); //validations
-  }
-  phone.set({ name: req.body.name });
-  phone.set({ brand: req.body.brand });
-  phone.set({ price: req.body.price });
-  phone.set({ imgUrl: req.body.imgUrl });
-  phone.set({ stockCount: req.body.stockCount });
+    if (!phone) {
+      throw createError(404, "The givven id is not in ouer server");
+    }
+    phone.set({ name: req.body.name });
+    phone.set({ brand: req.body.brand });
+    phone.set({ price: req.body.price });
+    phone.set({ imgUrl: req.body.imgUrl });
+    phone.set({ stockCount: req.body.stockCount });
 
-  phone = await phone.save();
-  res.send(phone);
+    phone = await phone.save();
+    res.send(phone);
+  } catch (error) {
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, "invalid id"));
+      return;
+    }
+    next(error);
+  }
 });
 
 //delete cart details

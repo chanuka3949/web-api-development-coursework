@@ -5,7 +5,7 @@ const createError = require("http-errors");
 const mongoose = require("mongoose");
 
 // get all phones details
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     let phones = await phoneModel.find();
     if (!phones) {
@@ -20,36 +20,31 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 //get phones details according to the givven id
 router.get("/:name", async (req, res, next) => {
   try {
-   // let phoneData = await phoneModel.findById(req.params.phoneId);
-   let phoneData = await phoneModel.find({ name: req.params.name,});
-    if (!phoneData) {
-      throw createError(404, "The givven id is not in ouer server");
+    let phoneData = await phoneModel.find({ name: req.params.name });
+    if (phoneData.length === 0) {
+      throw createError(404, "No matchs found");
     }
 
     res.send(phoneData);
   } catch (error) {
-    //console.log(error.message);
     if (error instanceof mongoose.CastError) {
       next(createError(400, "invalid id"));
       return;
     }
-    next(error); //error coming in the catch block
+    next(error);
   }
 });
 
-
 //create records
 router.post("/", async (req, res, next) => {
- 
   try {
     if (!req.body) {
       throw createError(404, "not given values"); //validations
     }
-    
+
     let phoneDataToBeAddedDb = new phoneModel({
       name: req.body.name,
       brand: req.body.brand,
@@ -61,14 +56,12 @@ router.post("/", async (req, res, next) => {
     if (!req.body.name) {
       throw createError(404, "not given values"); //validations
     }
-    
+
     let phoneDataToBeAdded = await phoneDataToBeAddedDb.save();
     res.send(phoneDataToBeAdded);
-
-    
   } catch (error) {
     //console.log(error.message);
-    if (error.name=== 'Validation Error') {
+    if (error.name === "Validation Error") {
       next(createError(422, error.message));
       return;
     }
