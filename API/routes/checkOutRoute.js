@@ -3,6 +3,7 @@ const checkOutModel = require("../models/checkOutModel");
 const User = require("../models/userModel");
 const MailManager = require("../services/MailManager");
 const router = express.Router();
+const createError = require("http-errors");
 
 // get all phones details
 router.get("/", async (req, res) => {
@@ -30,51 +31,12 @@ router.get("/:phoneId", async (req, res) => {
   res.send(phoneData);
 });
 
-//create records
-// router.post("/", async (req, res) => {
-//     // if (!req.body.userId) {
-//     //   return res.status(400).send("Not all madatary values have benn set !"); //validations
-//     // }
-//        let cartList = req.body.cartList;
-//        let userId = req.body.userId;
-//        var newCartList ={
-//          userId:"",
-//          itemId: "",
-//          itemName:"",
-//          itembrand:"",
-//          itemprice: 0,
-//          itemimgUrl: "",
-//          itemCount: 0,
-//        };
-//        let newCartList2=[];
-
-//       for (i = 0; i < cartList.length; i++) {
-//         newCartList = new Object();
-//          newCartList.userId = cartList[i].userId;
-//          newCartList.itemId = cartList[i].itemId;
-//          newCartList.itemName = cartList[i].itemName;
-//          newCartList.itembrand = cartList[i].itembrand;
-//          newCartList.itemprice = cartList[i].itemprice;
-//          newCartList.itemimgUrl =  cartList[i].itemimgUrl;
-//          newCartList.itemCount = cartList[i].itemCount;
-//          newCartList2[i] = newCartList;
-//       }
-//       console.log(newCartList2);
-
-//       let a = await checkOutModel.insertMany(newCartList2)
-//       res.send(a);
-//     });
-
 router.post("/", async (req, res, next) => {
   try {
-
-    console.log(req.body.total)
-    if (!req.body.total) {
-      throw createError(400, "Pleae log!");
+    if (!req.body.userId) {
+      throw createError(400, "Please Sign In");
     }
-
-    console.log(req.body.cartList)
-    if (!req.body.cartList) {
+    if (!req.body.cartList || req.body.cartList.length === 0) {
       throw createError(400, "Please Add Items to Cart");
     }
 

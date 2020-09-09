@@ -25,7 +25,7 @@ class Cart extends Component {
                     <div className="col-sm-2">
                       <img
                         className="img-fluid"
-                        src={this.props.phone.itemimgUrl}
+                        src={this.props.phone.itemImgUrl}
                         alt=""
                         style={{
                           display: "block",
@@ -39,7 +39,7 @@ class Cart extends Component {
                       <h6 className="mb-1">{this.props.phone.itemName}</h6>
                       <strong>
                         <p className="mb-1">
-                          Unit Price: {this.props.currency} {this.props.phone.itemprice}
+                          Unit Price: {this.props.currency} {this.props.phone.itemPrice}
                         </p>
                       </strong>
                     </div>

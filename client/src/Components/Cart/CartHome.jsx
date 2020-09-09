@@ -7,6 +7,7 @@ import Loading from "../Loading";
 import { withAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import ShippingDetails from "./ShippingDetails";
 import { toast } from "react-toastify";
+import routesconfig from "../../routes_config.json";
 
 class CartHome extends Component {
   state = {
@@ -22,7 +23,7 @@ class CartHome extends Component {
     });
     this.state.cartList.forEach((item) => {
       this.setState({
-        cartTotal: this.state.cartTotal + item.itemprice * item.itemCount,
+        cartTotal: this.state.cartTotal + item.itemPrice * item.itemCount,
         cartQuantity: this.state.cartQuantity + item.itemCount,
       });
     });
@@ -34,7 +35,7 @@ class CartHome extends Component {
         <div>
           <NavBar cartCount={this.state.cartQuantity} />
         </div>
-        
+
         <div className="container">
           <div className="row no-gutters">
             <div className="col-sm-8" style={{ marginTop: 100 }}>
@@ -55,7 +56,9 @@ class CartHome extends Component {
                 checkout={() => {
                   this.chechkOut();
                 }}
-                clear = { ()=> { this.deletefromCart(localStorage.getItem("userID"))}}
+                clear={() => {
+                  this.deleteFromCart();
+                }}
                 quantity={this.state.cartQuantity}
                 total={this.state.cartTotal}
                 currency={this.state.currency}
@@ -70,21 +73,20 @@ class CartHome extends Component {
   async chechkOut() {
     try {
       axios
-        .post(`http://localhost:5000/api/checkOut/`, {
+        .post(`${routesconfig.checkOut}/`, {
           userId: localStorage.getItem("userID"),
           cartList: this.state.cartList,
           total: this.state.cartTotal,
         })
         .then(
-          (response) => {   
-            if (response.status === 200) {
-            toast.success("Checkout Successful");
-            this.deletefromCart();
+          (response) => {
+            toast.success("Order Successfull");
+            this.deleteFromCart();
+            localStorage.setItem("chckoutSuccessMsg", "chckoutSuccessMsg");
             localStorage.removeItem("cart");
-          }
           },
           (error) => {
-            toast.error(error.message);
+            toast.warning(error.response.data.message);
           }
         );
     } catch (e) {
@@ -92,15 +94,32 @@ class CartHome extends Component {
     }
   }
 
-  async deletefromCart() {
-    await axios.delete(
-      `http://localhost:5000/api/cart/deletecart/${localStorage.getItem("userID")}`,
-      {
-        userId: localStorage.getItem("userID"),
-      }
-    );
-    this.setState({ cartList: [] });
-    this.calculateTotalAmount();
+  async deleteFromCart() {
+    try {
+      await axios
+        .delete(
+          `${routesconfig.cart}/deletecart/${localStorage.getItem("userID")}`,{
+            userId: localStorage.getItem("userID"),
+          }
+        )
+        .then(
+          (response) => {
+            let msg = localStorage.getItem("chckoutSuccessMsg");
+            if (!msg) {
+              toast.success("Successfully Removed Items From Cart");
+            }
+            localStorage.removeItem("chckoutSuccessMsg");
+            this.setState({ cartList: [] });
+            this.calculateTotalAmount();
+            localStorage.removeItem("cart");
+          },
+          (error) => {
+            toast.warning(error.response.data.message);
+          }
+        );
+    } catch (e) {
+      toast.error(e);
+    }
   }
 
   // increase the qty
@@ -129,7 +148,7 @@ class CartHome extends Component {
     let a = JSON.parse(localStorage.getItem("cart"));
     for (let i = 0; i < a.length; i++) {
       console.log(item.itemId);
-      if (a[i]._id === item.itemId) {
+      if ((a[i]._id === item.itemId) | (a[i].itemId === item.itemId)) {
         console.log(a[i].count);
         a[i].itemcount = a[i].count++;
         localStorage.setItem("cart", JSON.stringify(a));
@@ -156,7 +175,7 @@ class CartHome extends Component {
       let a = JSON.parse(localStorage.getItem("cart"));
       for (let i = 0; i < a.length; i++) {
         console.log(item.itemId);
-        if (a[i]._id === item.itemId) {
+        if ((a[i]._id === item.itemId) | (a[i].itemId === item.itemId)) {
           console.log(a[i].count);
           a[i].itemcount = a[i].count--;
           localStorage.setItem("cart", JSON.stringify(a));
@@ -195,7 +214,7 @@ class CartHome extends Component {
     let a = JSON.parse(localStorage.getItem("cart"));
     for (let i = 0; i < a.length; i++) {
       console.log(a[i]._id);
-      if (a[i]._id === itemtodeleteid) {
+      if ((a[i]._id === itemtodeleteid) | (a[i].itemId === itemtodeleteid)) {
         console.log(a[i]);
         a.splice(i, 1);
         i--;

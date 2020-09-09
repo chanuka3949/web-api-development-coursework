@@ -1,6 +1,7 @@
 const express = require("express");
 const shoppingCartModel = require("../models/shoppingCartModel");
 const router = express.Router();
+const createError = require("http-errors");
 
 // get all cart details
 router.get("/", async (req, res) => {
@@ -35,15 +36,15 @@ router.get("/:userId", async (req, res) => {
 router.post("/", async (req, res, next) => {
   try {
     if (!req.body.userId) {
-      throw createError(400, "Pleae log!");
+      throw createError(400, "Please Sign In");
     }
     let cartDataToBeAddedDb = new shoppingCartModel({
       userId: req.body.userId,
       itemId: req.body.itemId,
       itemName: req.body.itemName,
-      itembrand: req.body.itembrand,
-      itemprice: req.body.itemprice,
-      itemimgUrl: req.body.itemimgUrl,
+      itemBrand: req.body.itemBrand,
+      itemPrice: req.body.itemPrice,
+      itemImgUrl: req.body.itemImgUrl,
       itemCount: req.body.itemCount,
     });
 
@@ -120,18 +121,16 @@ router.delete("/:itemId", async (req, res, next) => {
 
 router.delete("/deletecart/:userId", async (req, res, next) => {
   try {
-    let items = await shoppingCartModel.find({ userId: req.params.userId });
-   
-    let phoneId = "";
-    for (i = 0; i < items.length; i++) {
-      phoneId = await shoppingCartModel.findOneAndDelete({
-        itemId: items[i].itemId,
-        userId: req.params.userId,
-      });
+    let cart = await shoppingCartModel.deleteMany({
+      userId: req.params.userId,
+    });
+
+    if (cart.deletedCount === 0) {
+      throw createError(400, "No Items In The Cart");
     }
-    res.send(phoneId);
+
+    res.send(cart);
   } catch (error) {
-    //console.log(error.message);
     if (error.name === "ValidationError") {
       next(createError(422, error.message));
       return;
@@ -139,6 +138,7 @@ router.delete("/deletecart/:userId", async (req, res, next) => {
     next(error);
   }
 });
+
 // ProductModel.findOneAndDelete({ brand: 'Nike' }, function (err) {
 //   if(err) console.log(err);
 //   console.log("Successful deletion");
