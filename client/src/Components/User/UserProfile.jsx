@@ -109,7 +109,7 @@ class UserProfile extends Component {
     return (
       <React.Fragment>
         <div className="nawbar-cart">
-        <NavBar/>
+          <NavBar />
         </div>
         <div className="card-deck">
           <div

@@ -8,7 +8,13 @@ const Auth = () => {
   if (isAuthenticated) {
     return (
       <>
-        <Link to="" onClick={() => {logout(); localStorage.clear()}  }>
+        <Link
+          to=""
+          onClick={() => {
+            logout();
+            localStorage.clear();
+          }}
+        >
           Log Out
         </Link>
       </>
