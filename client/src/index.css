@@ -102,9 +102,7 @@ footer{
 }
 
 input::after {
-  content: "";
-  
- 
+  content: ""; 
   /* width: 100px;
   height: 100px; */
 }
@@ -113,6 +111,12 @@ input::after {
   width: 50% !important;
 }
 
-/* a.nawbarcart {
+.card-deck .img-fluid{
+  height: 8rem;
+  margin-top: 10px !important;
+}
+ 
+
+.nawbar-cart a.cart {
   display: none;
-} */
+}

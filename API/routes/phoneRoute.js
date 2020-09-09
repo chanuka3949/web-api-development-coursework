@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   try {
     let phones = await phoneModel.find();
     if (!phones) {
-      throw createError(404, "No phones in the system");
+      throw createError(404, "Can not get list of phones");
     }
     res.send(phones);
   } catch (error) {
@@ -29,6 +29,7 @@ router.get("/:name", async (req, res, next) => {
     if (!phoneData) {
       throw createError(404, "The givven id is not in ouer server");
     }
+
     res.send(phoneData);
   } catch (error) {
     //console.log(error.message);
@@ -43,6 +44,7 @@ router.get("/:name", async (req, res, next) => {
 
 //create records
 router.post("/", async (req, res, next) => {
+ 
   try {
     if (!req.body) {
       throw createError(404, "not given values"); //validations
@@ -55,12 +57,18 @@ router.post("/", async (req, res, next) => {
       imgUrl: req.body.imgUrl,
       stockCount: req.body.stockCount,
     });
+
+    if (!req.body.name) {
+      throw createError(404, "not given values"); //validations
+    }
     
     let phoneDataToBeAdded = await phoneDataToBeAddedDb.save();
     res.send(phoneDataToBeAdded);
+
+    
   } catch (error) {
     //console.log(error.message);
-    if (error.name === "ValidationError") {
+    if (error.name=== 'Validation Error') {
       next(createError(422, error.message));
       return;
     }
@@ -89,7 +97,6 @@ router.put("/:phoneId", async (req, res, next) => {
     }
     res.send(phone);
   } catch (error) {
-    //console.log(error.message);
     if (error instanceof mongoose.CastError) {
       next(createError(400, "invalid id"));
       return;
@@ -109,7 +116,6 @@ router.delete("/:phoneId", async (req, res, next) => {
     }
     res.send(phoneId);
   } catch (error) {
-    //console.log(error.message);
     if (error instanceof mongoose.CastError) {
       next(createError(400, "invalid id"));
       return;

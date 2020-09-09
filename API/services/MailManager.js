@@ -108,12 +108,12 @@ class MailManager {
         position,
         item.itemName,
         item.itemCount,
-        item.itemprice
+        item.itemPrice
       );
       this.generateLineBreak(doc, position + 20);
       bottom = position + 40;
     }
-    doc.text(`Total Amount(USD): ${order.total}`, 0, bottom, {
+    doc.text(`Total Amount(EUR): ${order.total}`, 0, bottom, {
       align: "right",
     });
   }

@@ -20,10 +20,6 @@ const checkOutSchema = new mongoose.Schema({
     date:{
         type: Date,
         default: new Date()
-    },
-    timeZone:{
-        type: Number,
-        default: new Date().getTimezoneOffset()
     }
 });
 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import StoreItem from "./Phone";
 import axios from "axios";
-import CartSearch from "../Cart/CartSearch";
 import NavBar from "../NavBar";
 import Slider from "../Slider";
 import { withAuth0 } from "@auth0/auth0-react";
@@ -19,8 +18,19 @@ class Home extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ searchTerm: event.target.value });
-    console.log(this.state.searchTerm);
+    let nam = event.target.name;
+    let val = event.target.value;
+    this.setState({ [nam]: val });
+  };
+
+  clearsearch = () => {
+    console.log("tt");
+    this.setState({
+     
+      searchTerm: "",
+     
+      
+    });
   };
 
   render() {
@@ -48,11 +58,11 @@ class Home extends Component {
             <div className="col-sm-12">
               <div className="d-flex justify-content-center pb-3 search-button">
                 <input
-                  type="text"
-                  name="search"
+                 type="text"
+                  name="searchTerm"
                   placeholder="Search product"
                   className="form-control"
-                  value={this.state.value}
+                  value={this.state.searchTerm}
                   onChange={this.handleChange}
                 />
                 <button
@@ -63,6 +73,18 @@ class Home extends Component {
                 >
                   <img src="search.png" alt=""></img>
                 </button>{" "}
+
+                <button
+                  className="btn btn-primary ml-3"
+                  onClick={() => {
+                    this.getPhoneList();
+                    this.clearsearch();
+                  }}
+                 // onClick={this.clearsearch}
+                >
+                  Reset
+                </button>{" "}
+
               </div>
             </div>
           </div>
@@ -285,7 +307,7 @@ class Home extends Component {
           );
           console.log(data);
           for (let i = 0; i < data.length; i++) {
-            newCartList = new Object();
+            newCartList = {};
             newCartList._id = data[i]._id;
             newCartList.userId = data[i].userId;
             newCartList.itemId = data[i].itemId;

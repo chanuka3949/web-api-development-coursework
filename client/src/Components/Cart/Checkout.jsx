@@ -8,14 +8,6 @@ class Checkout extends Component {
 
   render() {
     return (
-      // <Fade left cascade>
-      //   <main className="container">
-      //     <div>
-      //       <div className="col-sm-4 checkout">
-      //         </div>
-      //     </div>
-      //   </main>
-      // </Fade>
       <div>
         <div className="card card-body mt-4">
           <div className="row no-gutters py-2">
@@ -36,7 +28,7 @@ class Checkout extends Component {
                 >
                   CHECKOUT
                 </button>
-                <button type="button" className="btn btn-outlineprimary btn-sm"  onClick={this.props.clear}>
+                <button type="button" className="btn btn-outlineprimary btn-sm mb-2"  onClick={this.props.clear}>
                   CLEAR
                 </button>
               </div>

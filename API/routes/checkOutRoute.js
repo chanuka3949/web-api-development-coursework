@@ -2,11 +2,12 @@ const express = require("express");
 const checkOutModel = require("../models/checkOutModel");
 const User = require("../models/userModel");
 const MailManager = require("../services/MailManager");
-const router = express.Router();
 const createError = require("http-errors");
+const mongoose = require("mongoose");
+const router = express.Router();
 
 // get all phones details
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     let order = await checkOutModel.find();
     if (!order) {
@@ -53,6 +54,7 @@ router.post("/", async (req, res, next) => {
     ) {
       throw createError(400, "Please Save Shipping Details Correctly");
     }
+    
 
     let cartList = req.body.cartList;
     let userId = req.body.userId;
@@ -84,6 +86,7 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
 
 //Edit phone details
 router.put("/:phoneId", async (req, res) => {

@@ -23,8 +23,6 @@ const Profile = () => {
     try {
       let uid = sub.split("|", 2)[1];
       await axios.get(`http://localhost:5000/api/users/${uid}`);
-
-      return true;
     } catch (e) {
       if (!e.response) {
         return;
