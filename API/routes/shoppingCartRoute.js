@@ -1,6 +1,8 @@
 const express = require("express");
 const shoppingCartModel = require("../models/shoppingCartModel");
 const router = express.Router();
+const createError = require("http-errors");
+const mongoose = require("mongoose");
 
 // get all cart details
 router.get("/", async (req, res, next) => {
@@ -32,52 +34,63 @@ router.get("/:userId", async (req, res) => {
 });
 
 //adding to shopping cart
-router.post("/", async (req, res) => {
-
-  if (!req.body.userId) {
-    return res.status(400).send("Not all madatary values have benn set !");
-  }
+router.post("/", async (req, res, next) => {
   try {
+    if (!req.body.userId) {
+      throw createError(400, "Please Sign In");
+    }
     let cartDataToBeAddedDb = new shoppingCartModel({
       userId: req.body.userId,
       itemId: req.body.itemId,
       itemName: req.body.itemName,
-      itembrand: req.body.itembrand,
-      itemprice: req.body.itemprice,
-      itemimgUrl: req.body.itemimgUrl,
+      itemBrand: req.body.itemBrand,
+      itemPrice: req.body.itemPrice,
+      itemImgUrl: req.body.itemImgUrl,
       itemCount: req.body.itemCount,
     });
 
     let cartDataToBeAdded = await cartDataToBeAddedDb.save();
     res.send(cartDataToBeAdded);
-  } catch (e) {
-    return res.status(500).send(e.message);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
+    }
+    next(error);
   }
 });
 
 
-router.put("/:phoneId", async (req, res) => {
+router.put("/:phoneId", async (req, res, next) => {
+  try{
   let itemId = req.params.phoneId;
   let userId = req.body.userId;
 
+  // if (req.body.itemCount <= 0) {
+  //   return res.status(400).json({ message: "Minus values are not accepted" });
+  // }
   if (req.body.itemCount <= 0) {
-    return res.status(400).json({ message: "Minus values are not accepted" });
+    throw createError(400, "Minus values are not accepted");
   }
-  // if (req.body.itemCount > 5)  {
-  //   return res.status(400).json({ message: "Not in stock" });
-  // } 
+  
   let cartEdit = await shoppingCartModel.findOneAndUpdate(
     { itemId: req.params.phoneId, userId: userId },
     { $set: { itemCount: req.body.itemCount } },
     { new: true, useFindAndModify: false }
   );
-  
+
   res.send(cartEdit);
+}catch (error) {
+  if (error instanceof mongoose.CastError) {
+    next(createError(400, "invalid id"));
+    return;
+  }
+  next(error);
+}
 });
 
 
 //delete cart details
-router.delete("/:itemId", async (req, res) => {
+router.delete("/:itemId", async (req, res, next) => {
   try{
   let item = await shoppingCartModel.find({ itemId: req.params.itemId });
   let phoneId = await shoppingCartModel.findOneAndDelete({
@@ -98,21 +111,24 @@ catch (error) {
 }
 });
 
-router.delete("/deletecart/:userId", async (req, res) => {
-  let items = await shoppingCartModel.find({ userId: req.params.userId });
-  console.log(items.length);
-  let phoneId = "";
-  for (i = 0; i < items.length; i++) {
-    phoneId = await shoppingCartModel.findOneAndDelete({
-      itemId: items[i].itemId,
+router.delete("/deletecart/:userId", async (req, res, next) => {
+  try {
+    let cart = await shoppingCartModel.deleteMany({
       userId: req.params.userId,
     });
+
+    if (cart.deletedCount === 0) {
+      throw createError(400, "No Items In The Cart");
+    }
+
+    res.send(cart);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      next(createError(422, error.message));
+      return;
+    }
+    next(error);
   }
-  res.send(phoneId);
 });
 
-// ProductModel.findOneAndDelete({ brand: 'Nike' }, function (err) {
-//   if(err) console.log(err);
-//   console.log("Successful deletion");
-// });
 module.exports = router;

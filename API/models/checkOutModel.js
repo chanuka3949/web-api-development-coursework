@@ -16,6 +16,11 @@ const checkOutSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    date:{
+        type: Date,
+        default: new Date()
+    }
 });
 
 const checkOutModel = mongoose.model("checkOutModel", checkOutSchema);

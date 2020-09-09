@@ -89,9 +89,9 @@ class MailManager {
     doc
       .fontSize(12)
       .text("Name", 50, position)
-      .text("Unit Price (USD)", 280, position, { width: 90, align: "right" })
+      .text("Unit Price (EUR)", 280, position, { width: 90, align: "right" })
       .text("Quantity", 340, position, { width: 90, align: "right" })
-      .text("Line Total (USD)", 0, position, { align: "right" });
+      .text("Line Total (EUR)", 0, position, { align: "right" });
 
     doc
       .strokeColor("#000000")
@@ -108,12 +108,12 @@ class MailManager {
         position,
         item.itemName,
         item.itemCount,
-        item.itemprice
+        item.itemPrice
       );
       this.generateLineBreak(doc, position + 20);
       bottom = position + 40;
     }
-    doc.text(`Total Amount(USD): ${order.total}`, 0, bottom, {
+    doc.text(`Total Amount(EUR): ${order.total}`, 0, bottom, {
       align: "right",
     });
   }

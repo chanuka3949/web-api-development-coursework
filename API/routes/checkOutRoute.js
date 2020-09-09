@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 // get all phones details
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     let order = await checkOutModel.find();
     if (!order) {
@@ -32,43 +32,15 @@ router.get("/:phoneId", async (req, res) => {
   res.send(phoneData);
 });
 
-//create records
-// router.post("/", async (req, res) => {
-//     // if (!req.body.userId) {
-//     //   return res.status(400).send("Not all madatary values have benn set !"); //validations
-//     // }
-//        let cartList = req.body.cartList;
-//        let userId = req.body.userId;
-//        var newCartList ={
-//          userId:"",
-//          itemId: "",
-//          itemName:"",
-//          itembrand:"",
-//          itemprice: 0,
-//          itemimgUrl: "",
-//          itemCount: 0,
-//        };
-//        let newCartList2=[];
-
-//       for (i = 0; i < cartList.length; i++) {
-//         newCartList = new Object();
-//          newCartList.userId = cartList[i].userId;
-//          newCartList.itemId = cartList[i].itemId;
-//          newCartList.itemName = cartList[i].itemName;
-//          newCartList.itembrand = cartList[i].itembrand;
-//          newCartList.itemprice = cartList[i].itemprice;
-//          newCartList.itemimgUrl =  cartList[i].itemimgUrl;
-//          newCartList.itemCount = cartList[i].itemCount;
-//          newCartList2[i] = newCartList;
-//       }
-//       console.log(newCartList2);
-
-//       let a = await checkOutModel.insertMany(newCartList2)
-//       res.send(a);
-//     });
-
 router.post("/", async (req, res, next) => {
   try {
+    if (!req.body.userId) {
+      throw createError(400, "Please Sign In");
+    }
+    if (!req.body.cartList || req.body.cartList.length === 0) {
+      throw createError(400, "Please Add Items to Cart");
+    }
+
     let user = await User.findOne({ uid: req.body.userId });
 
     if (
@@ -80,19 +52,14 @@ router.post("/", async (req, res, next) => {
       typeof user.address.postalCode === "undefined" ||
       typeof user.address.contactNumber === "undefined"
     ) {
-      throw createError(400, "Please Save The Address"); //validations
-    }
-
-    console.log(req.body.cartList)
-    if (!req.body.cartList) {
-      throw createError(404, "not given values"); //validations
+      throw createError(400, "Please Save Shipping Details Correctly");
     }
     
 
     let cartList = req.body.cartList;
     let userId = req.body.userId;
     let total = req.body.total;
-    var newCartList = {
+    let newCartList = {
       userId: "",
       items: [],
       total: 0,
@@ -112,11 +79,9 @@ router.post("/", async (req, res, next) => {
     manager.preparePDF(order, user);
 
     res.send(order);
-    
   } catch (error) {
-    if (error.name=== 'Validation Error') {
-      next(createError(422, error.message));
-      return;
+    if (error.name === "ValidationError") {
+      return next(createError(422, error.message));
     }
     next(error);
   }

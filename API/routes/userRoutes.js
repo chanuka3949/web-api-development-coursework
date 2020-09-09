@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const createError = require("http-errors");
+const mongoose = require("mongoose");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -35,10 +36,11 @@ router.get("/:uid", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  if (!req.body.uid || !req.body.name || !req.body.email) {
-    throw createError(400, "Mandatory fields cannot be null or empty");
-  }
   try {
+    if (!req.body.uid || !req.body.name || !req.body.email) {
+      throw createError(400, "Mandatory fields cannot be null or empty");
+    }
+
     let newUser = new User({
       uid: req.body.uid,
       name: req.body.name,
@@ -73,7 +75,8 @@ router.put("/:uid", async (req, res, next) => {
     res.send(user);
   } catch (error) {
     if (error.name === "ValidationError") {
-      return next(createError(422, error.message));
+      next(createError(422, "Pleasea add the all the fields"));
+      return;
     }
     next(error);
   }

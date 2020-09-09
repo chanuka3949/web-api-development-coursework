@@ -23,8 +23,6 @@ const Profile = () => {
     try {
       let uid = sub.split("|", 2)[1];
       await axios.get(`http://localhost:5000/api/users/${uid}`);
-
-      return true;
     } catch (e) {
       if (!e.response) {
         return;
@@ -37,12 +35,11 @@ const Profile = () => {
   useEffect(() => {
     if (isAuthenticated) {
       let uid = sub.split("|", 2)[1];
-      localStorage.setItem("A", uid)
+      localStorage.setItem("userID", uid)
       addUserIfNotExist();
     }
   });
 
   return <></>;
 };
-
 export default Profile;

@@ -29,9 +29,7 @@ router.get("/:name", async (req, res, next) => {
     if (!phoneData) {
       throw createError(404, "The givven id is not in ouer server");
     }
-    // if (!phoneData) {
-    //   return res.status(400).send("no phone found");
-    // }
+
     res.send(phoneData);
   } catch (error) {
     //console.log(error.message);
@@ -48,6 +46,10 @@ router.get("/:name", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
  
   try {
+    if (!req.body) {
+      throw createError(404, "not given values"); //validations
+    }
+    
     let phoneDataToBeAddedDb = new phoneModel({
       name: req.body.name,
       brand: req.body.brand,
@@ -95,7 +97,6 @@ router.put("/:phoneId", async (req, res, next) => {
     }
     res.send(phone);
   } catch (error) {
-    //console.log(error.message);
     if (error instanceof mongoose.CastError) {
       next(createError(400, "invalid id"));
       return;
@@ -115,7 +116,6 @@ router.delete("/:phoneId", async (req, res, next) => {
     }
     res.send(phoneId);
   } catch (error) {
-    //console.log(error.message);
     if (error instanceof mongoose.CastError) {
       next(createError(400, "invalid id"));
       return;
