@@ -28,7 +28,11 @@ class Checkout extends Component {
                 >
                   CHECKOUT
                 </button>
-                <button type="button" className="btn btn-outlineprimary btn-sm mb-2"  onClick={this.props.clear}>
+                <button
+                  type="button"
+                  className="btn btn-outlineprimary btn-sm mb-2"
+                  onClick={this.props.clear}
+                >
                   CLEAR
                 </button>
               </div>

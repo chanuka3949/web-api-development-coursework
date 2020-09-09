@@ -6,7 +6,7 @@ class Checkout extends Component {
   render() {
     return (
       <div className="footer-class">
-        <footer>All right recieved</footer>
+        <footer>NIBM</footer>
       </div>
     );
   }

@@ -17,13 +17,14 @@ class CartHome extends Component {
     currency: localStorage.getItem("Currency"),
   };
   calculateTotalAmount() {
+    let cRate = parseFloat(localStorage.getItem("CurrencyRate"));
     this.setState({
       cartTotal: 0,
       cartQuantity: 0,
     });
     this.state.cartList.forEach((item) => {
       this.setState({
-        cartTotal: this.state.cartTotal + item.itemPrice * item.itemCount,
+        cartTotal: this.state.cartTotal + item.itemprice * item.itemCount * cRate,
         cartQuantity: this.state.cartQuantity + item.itemCount,
       });
     });
@@ -98,7 +99,8 @@ class CartHome extends Component {
     try {
       await axios
         .delete(
-          `${routesconfig.cart}/deletecart/${localStorage.getItem("userID")}`,{
+          `${routesconfig.cart}/deletecart/${localStorage.getItem("userID")}`,
+          {
             userId: localStorage.getItem("userID"),
           }
         )
