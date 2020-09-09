@@ -68,7 +68,7 @@ router.post("/", async (req, res, next) => {
     
   } catch (error) {
     //console.log(error.message);
-    if (error.name=== 'Validation Error') {
+    if (error.name=== 'ValidationError') {
       next(createError(422, error.message));
       return;
     }

@@ -15,16 +15,18 @@ class CartHome extends Component {
     cartTotal: 0,
     cartQuantity: 0,
     currency: localStorage.getItem("Currency"),
+    currencyRate: localStorage.getItem("CurrencyRate"),
   };
   calculateTotalAmount() {
-    let cRate = parseFloat(localStorage.getItem("CurrencyRate"));
     this.setState({
       cartTotal: 0,
       cartQuantity: 0,
     });
     this.state.cartList.forEach((item) => {
       this.setState({
-        cartTotal: this.state.cartTotal + item.itemprice * item.itemCount * cRate,
+        cartTotal:
+          this.state.cartTotal +
+          item.itemPrice * item.itemCount * parseFloat(this.state.currencyRate),
         cartQuantity: this.state.cartQuantity + item.itemCount,
       });
     });
@@ -45,6 +47,7 @@ class CartHome extends Component {
                   key={item._id}
                   phone={item}
                   currency={this.state.currency}
+                  currencyRate={parseFloat(this.state.currencyRate)}
                   onCount={() => this.updateCartItem(item)}
                   onCountDeduct={() => this.deductCartItem(item)}
                   onDelete={() => this.deleteCartItem(item.itemId)}
@@ -61,7 +64,7 @@ class CartHome extends Component {
                   this.deleteFromCart();
                 }}
                 quantity={this.state.cartQuantity}
-                total={this.state.cartTotal}
+                total={this.state.cartTotal.toFixed(2)}
                 currency={this.state.currency}
               />
             </div>
@@ -77,7 +80,7 @@ class CartHome extends Component {
         .post(`${routesconfig.checkOut}/`, {
           userId: localStorage.getItem("userID"),
           cartList: this.state.cartList,
-          total: this.state.cartTotal,
+          total: this.state.cartTotal / parseFloat(this.state.currencyRate),
         })
         .then(
           (response) => {

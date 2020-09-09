@@ -60,7 +60,7 @@ class MailManager {
       .text(`Customer Name: ${user.name}`, 50, 125)
       .text(`Order No: ${order._id}`, 50, 150)
       .text(
-        `Order Date: ${data.getFullYear()}-${data.getMonth()}-${data.getDate()}`,
+        `Order Date: ${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`,
         50,
         175
       )
