@@ -161,7 +161,7 @@ class Home extends Component {
     if (update === true) {
       try {
         await axios
-          .put(`http://localhost:5000/api/cart/${phone._id}`, {
+          .put(`${routesconfig.cart}/${phone._id}`, {
             itemCount: count,
             userId: localStorage.getItem("userID"),
             itemId: phone._id,
@@ -193,7 +193,7 @@ class Home extends Component {
   }
 
   getPhoneList() {
-    axios.get("http://localhost:5000/api/phones/").then(
+    axios.get(`${routesconfig.phones}/`).then(
       (response) => {
         this.setState({ phoneList: response.data });
       },
@@ -202,7 +202,7 @@ class Home extends Component {
       }
     );
   }
-//`http://localhost:5000/api/phones/${name}`
+  //`http://localhost:5000/api/phones/${name}`
   getPhoneByName(name) {
     axios.get(`${routesconfig.phones}/${name}`).then(
       (response) => {
@@ -281,7 +281,7 @@ class Home extends Component {
           };
 
           let { data } = await axios.get(
-            `http://localhost:5000/api/cart/${localStorage.getItem("userID")}`
+            `${routesconfig.cart}/${localStorage.getItem("userID")}`
           );
           console.log(data);
           for (let i = 0; i < data.length; i++) {

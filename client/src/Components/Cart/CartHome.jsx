@@ -98,10 +98,7 @@ class CartHome extends Component {
     try {
       await axios
         .delete(
-          `http://localhost:5000/api/cart/deletecart/${localStorage.getItem(
-            "userID"
-          )}`,
-          {
+          `${routesconfig.cart}/deletecart/${localStorage.getItem("userID")}`,{
             userId: localStorage.getItem("userID"),
           }
         )

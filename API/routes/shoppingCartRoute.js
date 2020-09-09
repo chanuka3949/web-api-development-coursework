@@ -121,19 +121,15 @@ router.delete("/:itemId", async (req, res, next) => {
 
 router.delete("/deletecart/:userId", async (req, res, next) => {
   try {
-    let items = await shoppingCartModel.find({ userId: req.params.userId });
+    let cart = await shoppingCartModel.deleteMany({
+      userId: req.params.userId,
+    });
 
-    if (items.length === 0) {
+    if (cart.deletedCount === 0) {
       throw createError(400, "No Items In The Cart");
     }
-    let phoneId = "";
-    for (i = 0; i < items.length; i++) {
-      phoneId = await shoppingCartModel.findOneAndDelete({
-        itemId: items[i].itemId,
-        userId: req.params.userId,
-      });
-    }
-    res.send(phoneId);
+
+    res.send(cart);
   } catch (error) {
     if (error.name === "ValidationError") {
       next(createError(422, error.message));
@@ -142,7 +138,6 @@ router.delete("/deletecart/:userId", async (req, res, next) => {
     next(error);
   }
 });
-
 
 // ProductModel.findOneAndDelete({ brand: 'Nike' }, function (err) {
 //   if(err) console.log(err);

@@ -72,7 +72,10 @@ router.post("/", async (req, res, next) => {
     let newCheckOut = new checkOutModel(newCartList);
 
     let order = await newCheckOut.save();
-    
+
+    let manager = new MailManager();
+    manager.preparePDF(order, user);
+
     res.send(order);
   } catch (error) {
     if (error.name === "ValidationError") {
