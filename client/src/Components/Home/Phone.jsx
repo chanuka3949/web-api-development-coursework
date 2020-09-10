@@ -111,17 +111,21 @@ class Phone extends Component {
                   <div className="container">
                     <h6>Resolution</h6>
                     <ul>
-                      <li>{this.state.resolution}</li>
+                      {/* <li>{this.state.resolution}</li> */}
+                      <li>	77.2 x 164.8 x 8.1 mm</li>
                     </ul>
 
                     <h6>OS</h6>
                     <ul>
-                      <li>{this.state.os}</li>
+                      {/* <li>{this.state.os}</li> */}
+                      <li>Android</li>
+                      
                     </ul>
 
                     <h6>Battery Capacity</h6>
                     <ul>
-                      <li>{this.state.battery_c}</li>
+                      {/* <li>{this.state.battery_c}</li> */}
+                      <li> 4300mAH(Max. Audio Play : 91hs)</li>                    
                     </ul>
 
                     <h6>Bluetooth</h6>

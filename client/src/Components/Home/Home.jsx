@@ -219,14 +219,14 @@ class Home extends Component {
       }
     );
   }
-  //`http://localhost:5000/api/phones/${name}`
+
   getPhoneByName(name) {
     axios.get(`${routesconfig.phones}/${name}`).then(
       (response) => {
         this.setState({ phoneList: response.data });
       },
       (error) => {
-        toast.error(error.message);
+        toast.warning(error.response.data.message);
       }
     );
   }

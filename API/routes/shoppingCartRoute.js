@@ -22,15 +22,23 @@ router.get("/", async (req, res, next) => {
 });
 
 // get cart details according to the givven id
-router.get("/:userId", async (req, res) => {
-  let shoppingCartData = await shoppingCartModel.find({
-    userId: req.params.userId,
-  });
+router.get("/:userId", async (req, res, next) => {
+  try {
+    let shoppingCartData = await shoppingCartModel.find({
+      userId: req.params.userId,
+    });
 
-  if (!shoppingCartData) {
-    res.status(404).send("the given id dose not in our server");
+    if (shoppingCartData.length === 0) {
+      throw createError(404, "The given id dose not in our server");
+    }
+    res.send(shoppingCartData);
+  } catch (error) {
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, "invalid id"));
+      return;
+    }
+    next(error);
   }
-  res.send(shoppingCartData);
 });
 
 //adding to shopping cart
@@ -59,56 +67,50 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-
 router.put("/:phoneId", async (req, res, next) => {
-  try{
-  let itemId = req.params.phoneId;
-  let userId = req.body.userId;
+  try {
+    let itemId = req.params.phoneId;
+    let userId = req.body.userId;
 
-  // if (req.body.itemCount <= 0) {
-  //   return res.status(400).json({ message: "Minus values are not accepted" });
-  // }
-  if (req.body.itemCount <= 0) {
-    throw createError(400, "Minus values are not accepted");
-  }
-  
-  let cartEdit = await shoppingCartModel.findOneAndUpdate(
-    { itemId: req.params.phoneId, userId: userId },
-    { $set: { itemCount: req.body.itemCount } },
-    { new: true, useFindAndModify: false }
-  );
+    if (req.body.itemCount <= 0) {
+      throw createError(400, "Minus values are not accepted");
+    }
 
-  res.send(cartEdit);
-}catch (error) {
-  if (error instanceof mongoose.CastError) {
-    next(createError(400, "invalid id"));
-    return;
+    let cartEdit = await shoppingCartModel.findOneAndUpdate(
+      { itemId: req.params.phoneId, userId: userId },
+      { $set: { itemCount: req.body.itemCount } },
+      { new: true, useFindAndModify: false }
+    );
+
+    res.send(cartEdit);
+  } catch (error) {
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, "invalid id"));
+      return;
+    }
+    next(error);
   }
-  next(error);
-}
 });
-
 
 //delete cart details
 router.delete("/:itemId", async (req, res, next) => {
-  try{
-  let item = await shoppingCartModel.find({ itemId: req.params.itemId });
-  let phoneId = await shoppingCartModel.findOneAndDelete({
-    userId: item[0].userId,
-    itemId: req.params.itemId,
-  });
-  if (!phoneId) {
-    throw createError(404, "The givven id is not in ouer server");
+  try {
+    let item = await shoppingCartModel.find({ itemId: req.params.itemId });
+    let phoneId = await shoppingCartModel.findOneAndDelete({
+      userId: item[0].userId,
+      itemId: req.params.itemId,
+    });
+    if (!phoneId) {
+      throw createError(404, "The givven id is not in ouer server");
+    }
+    res.send(phoneId);
+  } catch (error) {
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, "invalid id"));
+      return;
+    }
+    next(error);
   }
-  res.send(phoneId);
-}
-catch (error) {
-  if (error instanceof mongoose.CastError) {
-    next(createError(400, "invalid id"));
-    return;
-  }
-  next(error);
-}
 });
 
 router.delete("/deletecart/:userId", async (req, res, next) => {
