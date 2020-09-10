@@ -111,7 +111,7 @@ class CartHome extends Component {
           (response) => {
             let msg = localStorage.getItem("chckoutSuccessMsg");
             if (!msg) {
-              toast.success("Successfully Removed Items From Cart");
+              toast.success("Removed Items From Cart");
             }
             localStorage.removeItem("chckoutSuccessMsg");
             this.setState({ cartList: [] });

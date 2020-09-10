@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 
-class Checkout extends Component {
+export default class Checkout extends Component {
   state = {};
 
   render() {
     return (
       <div className="footer-class">
-        <footer>NIBM</footer>
+        <footer>NIBM 19.1 </footer>
       </div>
     );
   }
 }
 
-export default Checkout;

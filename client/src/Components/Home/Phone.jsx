@@ -70,7 +70,11 @@ class Phone extends Component {
               <h6 className="card-title">{this.props.phone.name}</h6>
               <h6 className="card-text">
                 {localStorage.getItem("Currency")}
-                {""} {(this.props.phone.price * parseFloat( localStorage.getItem("CurrencyRate"))).toFixed(2)}
+                {""}{" "}
+                {(
+                  this.props.phone.price *
+                  parseFloat(localStorage.getItem("CurrencyRate"))
+                ).toFixed(2)}
               </h6>
               <button
                 className="btn btn-outline-success float-left"
@@ -104,28 +108,24 @@ class Phone extends Component {
                   </p>
                   <div className="discription pb-3">
                     <strong>
-                      <h4>Discription</h4>
+                      <h4>Specifications</h4>
                     </strong>
                   </div>
 
                   <div className="container">
                     <h6>Resolution</h6>
                     <ul>
-                      {/* <li>{this.state.resolution}</li> */}
-                      <li>	77.2 x 164.8 x 8.1 mm</li>
+                      <li>{this.state.resolution}</li>
                     </ul>
 
                     <h6>OS</h6>
                     <ul>
-                      {/* <li>{this.state.os}</li> */}
-                      <li>Android</li>
-                      
+                      <li>{this.state.os}</li>
                     </ul>
 
                     <h6>Battery Capacity</h6>
                     <ul>
-                      {/* <li>{this.state.battery_c}</li> */}
-                      <li> 4300mAH(Max. Audio Play : 91hs)</li>                    
+                      <li>{this.state.battery_c}</li>
                     </ul>
 
                     <h6>Bluetooth</h6>
@@ -142,12 +142,14 @@ class Phone extends Component {
                       
                     </ul>
                   </div>
-
                   <div className="product-price">
                     <div>
                       <strong>
-                        Price ${""}
-                        {this.props.phone.price}
+                        Price {localStorage.getItem("Currency")}{" "}
+                        {(
+                          this.props.phone.price *
+                          parseFloat(localStorage.getItem("CurrencyRate"))
+                        ).toFixed(2)}
                       </strong>
                     </div>
                     <button
@@ -195,24 +197,11 @@ class Phone extends Component {
             localStorage.setItem("specs", data);
             var phone = localStorage.getItem("specs");
             var phoneData = JSON.parse(phone);
-
-            console.log(phoneData[0]);
-            localStorage.setItem("specsDeviceName", phoneData[0].DeviceName);
-            localStorage.setItem("specsResolution", phoneData[0].resolution);
-            localStorage.setItem("specsBluetooth", phoneData[0].bluetooth);
-            localStorage.setItem("specsBattery", phoneData[0].battery_c);
-            localStorage.setItem("specsOS", phoneData[0].os);
-            localStorage.setItem("specsGps", phoneData[0].gps);
-
-            this.setState({
-              resolution: localStorage.getItem("specsResolution"),
-            });
-            this.setState({
-              bluetooth: localStorage.getItem("specsBluetooth"),
-            });
-            this.setState({ battery_c: localStorage.getItem("specsBattery") });
-            this.setState({ os: localStorage.getItem("specsOS") });
-            this.setState({ gps: localStorage.getItem("specsGps") });
+            this.setState({ resolution: phoneData[0].resolution });
+            this.setState({ bluetooth: phoneData[0].bluetooth });
+            this.setState({ battery_c: phoneData[0].battery_c });
+            this.setState({ os: phoneData[0].os });
+            this.setState({ gps: phoneData[0].gps });
           }
         }.bind(this)
       );

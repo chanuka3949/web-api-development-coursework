@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import StoreItem from "./Phone";
+import Phone from "./Phone";
 import axios from "axios";
 import NavBar from "../NavBar";
 import Slider from "../Slider";
@@ -96,7 +96,7 @@ class Home extends Component {
           }}
         >
           {this.state.phoneList.map((phone) => (
-            <StoreItem
+            <Phone
               key={phone._id}
               phone={phone}
               onaddToCart={() => this.saveItemsOnCart(phone)}

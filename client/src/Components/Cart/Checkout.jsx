@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-// import Fade from "react-reveal/Fade";
 
-class Checkout extends Component {
+export default class Checkout extends Component {
   state = {
     data: this.props.data,
   };
@@ -44,4 +43,3 @@ class Checkout extends Component {
   }
 }
 
-export default Checkout;
