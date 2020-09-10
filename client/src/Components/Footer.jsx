@@ -6,7 +6,7 @@ export default class Checkout extends Component {
   render() {
     return (
       <div className="footer-class">
-        <footer>NIBM 19.1 </footer>
+        <footer>NIBM Computing 19.1 - Group 5 </footer>
       </div>
     );
   }

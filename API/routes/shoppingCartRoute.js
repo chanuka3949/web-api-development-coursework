@@ -8,14 +8,8 @@ const mongoose = require("mongoose");
 router.get("/", async (req, res, next) => {
   try {
     let cartItems = await shoppingCartModel.find();
-    if (!cartItems) {
-      throw createError(404, "No cart items found");
-    }
     res.send(cartItems);
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return next(createError(422, "Data retrieval failed"));
-    }
     next(error);
   }
 });

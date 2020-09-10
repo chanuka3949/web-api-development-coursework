@@ -14,11 +14,11 @@ class Phone extends Component {
     phoneName: "",
     phoneBrand: "",
     phonePrice: 0,
-    resolution: "",
-    bluetooth: "",
-    battery_c: "0",
-    os: "",
-    gps: "",
+    resolution: "1440 x 3040 pixels, 19:9 ratio (~550 ppi density)",
+    bluetooth: "5.0, A2DP, LE, aptX",
+    battery_c: "Li-Ion 3400 mAh, non-removable",
+    os: "Android 9.0 (Pie), upgradable to Android 10, One UI 2.1",
+    gps: "Yes, with A-GPS, GLONASS, BDS, GALILEO",
   };
 
   openModal = (Phone) => {
@@ -61,7 +61,6 @@ class Phone extends Component {
                 display: "block",
                 margin: "0px auto 10px",
                 maxHeight: "200px",
-                // width: "135px",
                 width: "125px",
               }}
             />
@@ -104,7 +103,7 @@ class Phone extends Component {
                 <img src={this.props.phone.imgUrl} alt={""}></img>
                 <div className="product-details-description">
                   <p>
-                    <strong>{this.props.phone.name}</strong>
+                    <h4>{this.props.phone.name}</h4>
                   </p>
                   <div className="discription pb-3">
                     <strong>
@@ -130,16 +129,12 @@ class Phone extends Component {
 
                     <h6>Bluetooth</h6>
                     <ul>
-                      {/* <li>{this.state.bluetooth}</li> */}
-                      <li>5.0, A2DP, LE, aptX</li>
-                      
+                      <li>{this.state.bluetooth}</li>
                     </ul>
 
                     <h6>GPS</h6>
                     <ul>
-                      {/* <li>{this.state.gps}</li> */}
-                      <li>Yes, with A-GPS, GLONASS, BDS, GALILEO</li>
-                      
+                      <li>{this.state.gps}</li>
                     </ul>
                   </div>
                   <div className="product-price">
@@ -156,7 +151,7 @@ class Phone extends Component {
                       className="button primary btn btn-primary"
                       onClick={() => {
                         this.props.onaddToCart();
-                           this.closeModal();
+                        this.closeModal();
                       }}
                     >
                       Add To Cart

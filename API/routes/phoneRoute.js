@@ -8,14 +8,8 @@ const mongoose = require("mongoose");
 router.get("/", async (req, res, next) => {
   try {
     let phones = await phoneModel.find();
-    if (!phones) {
-      throw createError(404, "No phones found");
-    }
     res.send(phones);
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return next(createError(422, "Data retrieval failed"));
-    }
     next(error);
   }
 });
@@ -61,7 +55,7 @@ router.post("/", async (req, res, next) => {
     res.send(phoneDataToBeAdded);
   } catch (error) {
     //console.log(error.message);
-    if (error.name=== 'ValidationError') {
+    if (error.name === "ValidationError") {
       next(createError(422, error.message));
       return;
     }
@@ -86,7 +80,7 @@ router.put("/:phoneId", async (req, res, next) => {
       { new: true, useFindAndModify: false }
     );
     if (!phone) {
-      throw createError(404, "The givven id is not in ouer server");
+      throw createError(404, "The given id does not exist");
     }
     res.send(phone);
   } catch (error) {
@@ -105,7 +99,7 @@ router.delete("/:phoneId", async (req, res, next) => {
       _id: req.params.phoneId,
     });
     if (!phoneId) {
-      throw createError(404, "The givven id is not in ouer server");
+      throw createError(404, "The given id does not exist");
     }
     res.send(phoneId);
   } catch (error) {
