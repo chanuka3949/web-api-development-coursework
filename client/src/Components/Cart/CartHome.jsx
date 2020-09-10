@@ -204,10 +204,10 @@ class CartHome extends Component {
         })
         .then(
           (response) => {
-            toast.info("Removed");
+            toast.success("Removed");
           },
           (error) => {
-            toast.error(error);
+           toast.error(error.response.data.message);
           }
         );
     } catch (e) {

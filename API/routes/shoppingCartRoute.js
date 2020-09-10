@@ -100,12 +100,12 @@ router.delete("/:itemId", async (req, res, next) => {
       itemId: req.params.itemId,
     });
     if (!phoneId) {
-      throw createError(404, "The givven id is not in ouer server");
+      throw createError(404, "This item is not in the cart");
     }
     res.send(phoneId);
   } catch (error) {
     if (error instanceof mongoose.CastError) {
-      next(createError(400, "invalid id"));
+      next(createError(422, "invalid id"));
       return;
     }
     next(error);
@@ -119,13 +119,13 @@ router.delete("/deletecart/:userId", async (req, res, next) => {
     });
 
     if (cart.deletedCount === 0) {
-      throw createError(400, "No Items In The Cart");
+      throw createError(404, "No Items In The Cart");
     }
 
     res.send(cart);
   } catch (error) {
-    if (error.name === "ValidationError") {
-      next(createError(422, error.message));
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, "invalid id"));
       return;
     }
     next(error);

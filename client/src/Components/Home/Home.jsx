@@ -196,11 +196,10 @@ class Home extends Component {
                 if ((item.itemId === phone._id) | (item._id === phone._id)) {
                   item.count--;
                   count = item.count;
-                  alreadyInCart = true;
-                  update = true;
-                  this.setState({ cartCount: this.state.cartCount - 1 });
                 }
               });
+              this.setState({ cartCount: this.state.cartCount - 1 });
+              localStorage.setItem("cart", JSON.stringify(cartItems));
             }
           );
       } catch (e) {
