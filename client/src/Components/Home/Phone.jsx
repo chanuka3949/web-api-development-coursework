@@ -70,7 +70,7 @@ class Phone extends Component {
               <h6 className="card-title">{this.props.phone.name}</h6>
               <h6 className="card-text">
                 {localStorage.getItem("Currency")}
-                {""} {this.props.phone.price * parseFloat( localStorage.getItem("CurrencyRate"))}
+                {""} {(this.props.phone.price * parseFloat( localStorage.getItem("CurrencyRate"))).toFixed(2)}
               </h6>
               <button
                 className="btn btn-outline-success float-left"
@@ -167,10 +167,14 @@ class Phone extends Component {
 
   async loadPhoneDetails() {
     try {
-      let brand2 = this.props.phone.brand
+      let brand2 = this.props.phone.brand;
       var url = "https://fonoapi.freshpixl.com/v1/getdevice";
       let options = {
-        parameters: { device: this.props.phone.name, token: apiconfig.fonoToken },timeout: 2900,
+        parameters: {
+          device: this.props.phone.name,
+          token: apiconfig.fonoToken,
+        },
+        timeout: 2900,
       };
       if (brand2) {
         options.parameters.brand = brand2;
@@ -196,8 +200,12 @@ class Phone extends Component {
             localStorage.setItem("specsOS", phoneData[0].os);
             localStorage.setItem("specsGps", phoneData[0].gps);
 
-            this.setState({ resolution: localStorage.getItem("specsResolution")});
-            this.setState({ bluetooth: localStorage.getItem("specsBluetooth")});
+            this.setState({
+              resolution: localStorage.getItem("specsResolution"),
+            });
+            this.setState({
+              bluetooth: localStorage.getItem("specsBluetooth"),
+            });
             this.setState({ battery_c: localStorage.getItem("specsBattery") });
             this.setState({ os: localStorage.getItem("specsOS") });
             this.setState({ gps: localStorage.getItem("specsGps") });
