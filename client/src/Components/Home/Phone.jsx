@@ -130,12 +130,16 @@ class Phone extends Component {
 
                     <h6>Bluetooth</h6>
                     <ul>
-                      <li>{this.state.bluetooth}</li>
+                      {/* <li>{this.state.bluetooth}</li> */}
+                      <li>5.0, A2DP, LE, aptX</li>
+                      
                     </ul>
 
                     <h6>GPS</h6>
                     <ul>
-                      <li>{this.state.gps}</li>
+                      {/* <li>{this.state.gps}</li> */}
+                      <li>Yes, with A-GPS, GLONASS, BDS, GALILEO</li>
+                      
                     </ul>
                   </div>
 
@@ -150,7 +154,7 @@ class Phone extends Component {
                       className="button primary btn btn-primary"
                       onClick={() => {
                         this.props.onaddToCart();
-                        //   this.closeModal();
+                           this.closeModal();
                       }}
                     >
                       Add To Cart

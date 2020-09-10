@@ -68,6 +68,7 @@ footer{
 .product-details-description {
   flex: 1 1;
   margin: 1rem;
+  margin-left: 6rem;
 }
 .close-modal {
   position: absolute;
