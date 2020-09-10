@@ -1,4 +1,4 @@
-# web-api-coursework - group 5
+# Web API Coursework - Group 05
 
 ## The Phone Shop
 
