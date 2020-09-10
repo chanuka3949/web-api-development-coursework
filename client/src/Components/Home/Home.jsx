@@ -41,10 +41,6 @@ class Home extends Component {
           <Slider />
         </div>
 
-        {/* <div>
-          <CartSearch />
-        </div> */}
-
         <div className="container">
           <div className="text-center mt-5">
             <h1>Welcome to our Store</h1>
@@ -76,7 +72,6 @@ class Home extends Component {
                     this.getPhoneList();
                     this.clearsearch();
                   }}
-                  // onClick={this.clearsearch}
                 >
                   Reset
                 </button>{" "}
@@ -290,22 +285,27 @@ class Home extends Component {
             itemCount: 0,
           };
 
-          let { data } = await axios.get(
-            `${routesconfig.cart}/${localStorage.getItem("userID")}`
-          );
-          console.log(data);
-          for (let i = 0; i < data.length; i++) {
-            newCartList = {};
-            newCartList._id = data[i]._id;
-            newCartList.userId = data[i].userId;
-            newCartList.itemId = data[i].itemId;
-            newCartList.itemName = data[i].itemName;
-            newCartList.itemBrand = data[i].itemBrand;
-            newCartList.itemPrice = data[i].itemPrice;
-            newCartList.itemImgUrl = data[i].itemImgUrl;
-            newCartList.count = data[i].itemCount;
-            cartListArray[i] = newCartList;
-          }
+          axios
+            .get(`${routesconfig.cart}/${localStorage.getItem("userID")}`)
+            .then(
+              (response) => {
+                if (response.data) {
+                  for (let i = 0; i < response.data.length; i++) {
+                    newCartList = {};
+                    newCartList._id = response.data[i]._id;
+                    newCartList.userId = response.data[i].userId;
+                    newCartList.itemId = response.data[i].itemId;
+                    newCartList.itemName = response.data[i].itemName;
+                    newCartList.itemBrand = response.data[i].itemBrand;
+                    newCartList.itemPrice = response.data[i].itemPrice;
+                    newCartList.itemImgUrl = response.data[i].itemImgUrl;
+                    newCartList.count = response.data[i].itemCount;
+                    cartListArray[i] = newCartList;
+                  }
+                }
+              },
+              (error) => {}
+            );
 
           console.log(cartListArray);
           localStorage.setItem("cart", JSON.stringify(cartListArray));

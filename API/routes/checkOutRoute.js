@@ -10,14 +10,8 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
   try {
     let order = await checkOutModel.find();
-    if (!order) {
-      throw createError(404, "Couldn't find any orders");
-    }
     res.send(order);
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return next(createError(422, "Data retrieval failed"));
-    }
     next(error);
   }
 });
@@ -28,7 +22,7 @@ router.get("/:phoneId", async (req, res, next) => {
     let phoneData = await checkOutModel.findById(req.params.phoneId);
 
     if (!phoneData) {
-      throw createError(404, "The givven id dose not in our server");
+      throw createError(404, "The given id does not exist");
     }
     res.send(phoneData);
   } catch (error) {
@@ -99,7 +93,7 @@ router.put("/:phoneId", async (req, res, next) => {
     let phone = await checkOutModel.findById(req.params.phoneId);
 
     if (!phone) {
-      throw createError(404, "The givven id is not in ouer server");
+      throw createError(404, "The given does not exist");
     }
     phone.set({ name: req.body.name });
     phone.set({ brand: req.body.brand });
