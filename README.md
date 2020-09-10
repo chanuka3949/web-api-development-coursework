@@ -1,11 +1,11 @@
-# web-api-coursework
+# web-api-coursework - group 5
 
 ## The Phone Shop
 
 ## Team Members
-* COBSCCOMP191P-044 (Student 1) - K A D Devinda
-* COBSCCOMP191P-041 (Student 2) - D M S Welikadaarachchi
-* COBSCCOMP191P-009 (Student 3) - W A C S De Silva
+* COBSCCOMP191P-044 | 9631731 (Student 1) - K A D Devinda
+* COBSCCOMP191P-041 | 9631708 (Student 2) - D M S Welikadaarachchi
+* COBSCCOMP191P-009 | 9630734 (Student 3) - W A C S De Silva
 
 ### Task Allocation
 
