@@ -70,7 +70,9 @@ class UserProfile extends Component {
           }
         },
         (error) => {
-          toast.error(error.message);
+          if (error.response) {
+            toast.error(error.response.data.message);
+          }
         }
       );
   }
@@ -98,8 +100,10 @@ class UserProfile extends Component {
           toast.info("User Details Updated");
         },
         (error) => {
-          this.getProfileData();
-          toast.error(error.message);
+          if (error.response) {
+            this.getProfileData();
+            toast.error(error.response.data.message);
+          }
         }
       );
   }

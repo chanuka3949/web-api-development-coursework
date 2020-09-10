@@ -8,12 +8,12 @@ router.get("/", async (req, res, next) => {
   try {
     let users = await User.find();
     if (!users) {
-      throw createError(404, "No users in the system");
+      throw createError(404, "No users found");
     }
     res.send(users);
   } catch (error) {
     if (error.name === "ValidationError") {
-      return next(createError(422, error.message));
+      return next(createError(422, "Data retrieval failed"));
     }
     next(error);
   }

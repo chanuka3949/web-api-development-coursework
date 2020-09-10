@@ -9,12 +9,12 @@ router.get("/", async (req, res, next) => {
   try {
     let phones = await phoneModel.find();
     if (!phones) {
-      throw createError(404, "Can not get list of phones");
+      throw createError(404, "No phones found");
     }
     res.send(phones);
   } catch (error) {
     if (error.name === "ValidationError") {
-      return next(createError(422, error.message));
+      return next(createError(422, "Data retrieval failed"));
     }
     next(error);
   }

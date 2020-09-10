@@ -1,7 +1,7 @@
 const express = require("express");
 const checkOutModel = require("../models/checkOutModel");
 const User = require("../models/userModel");
-const MailManager = require("../services/MailManager");
+const sendDetails = require("../services/mailManager");
 const createError = require("http-errors");
 const mongoose = require("mongoose");
 const router = express.Router();
@@ -11,12 +11,12 @@ router.get("/", async (req, res, next) => {
   try {
     let order = await checkOutModel.find();
     if (!order) {
-      throw createError(404, "No orders in the system");
+      throw createError(404, "Couldn't find any orders");
     }
     res.send(order);
   } catch (error) {
     if (error.name === "ValidationError") {
-      return next(createError(422, error.message));
+      return next(createError(422, "Data retrieval failed"));
     }
     next(error);
   }
@@ -82,8 +82,7 @@ router.post("/", async (req, res, next) => {
 
     let order = await newCheckOut.save();
 
-    let manager = new MailManager();
-    manager.preparePDF(order, user);
+    sendDetails(order, user);
 
     res.send(order);
   } catch (error) {
