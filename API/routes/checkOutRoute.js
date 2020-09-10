@@ -11,12 +11,12 @@ router.get("/", async (req, res, next) => {
   try {
     let order = await checkOutModel.find();
     if (!order) {
-      throw createError(404, "No orders in the system");
+      throw createError(404, "Couldn't find any orders");
     }
     res.send(order);
   } catch (error) {
     if (error.name === "ValidationError") {
-      return next(createError(422, error.message));
+      return next(createError(422, "Data retrieval failed"));
     }
     next(error);
   }

@@ -39,8 +39,10 @@ class ShippingDetails extends Component {
           toast.success("Shipping Address Updated");
         },
         (error) => {
-          toast.error(error.response.data.message);
-          this.getShippingDetails();
+          if (error.response) {
+            toast.error(error.response.data.message);
+            this.getShippingDetails();
+          }
         }
       );
   }

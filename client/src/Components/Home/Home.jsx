@@ -215,7 +215,9 @@ class Home extends Component {
         this.setState({ phoneList: response.data });
       },
       (error) => {
-        toast.error(error.message);
+        if (error.response) {
+          toast.error(error.response.data.message);
+        }
       }
     );
   }
@@ -268,7 +270,6 @@ class Home extends Component {
       if (CurrencyDataRate !== null) {
         for (var i in CurrencyDataRate) {
           if (i === localStorage.getItem("Currency")) {
-            console.log(CurrencyDataRate[i]);
             localStorage.setItem("CurrencyRate", CurrencyDataRate[i]);
           }
         }
