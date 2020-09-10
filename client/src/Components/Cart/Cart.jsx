@@ -40,8 +40,7 @@ class Cart extends Component {
                   <p className="mb-1">
                     Unit Price: {this.props.currency}{" "}
                     {(
-                      this.props.phone.itemPrice * this.props.currencyRate
-                    ).toFixed(2)}
+                      this.props.phone.itemPrice * this.props.currencyRate).toFixed(2)}
                   </p>
                 </strong>
               </div>
