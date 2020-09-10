@@ -7,11 +7,11 @@ const mongoose = require("mongoose");
 // get all cart details
 router.get("/", async (req, res, next) => {
   try {
-    let phones = await phoneModel.find();
-    if (!phones) {
+    let cartItems = await shoppingCartModel.find();
+    if (!cartItems) {
       throw createError(404, "No cart items found");
     }
-    res.send(phones);
+    res.send(cartItems);
   } catch (error) {
     if (error.name === "ValidationError") {
       return next(createError(422, "Data retrieval failed"));
